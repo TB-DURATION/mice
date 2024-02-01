@@ -1,0 +1,86 @@
+---
+title: "Of mice and men"
+format: html
+editor: source
+toc: true
+number-sections: true
+echo: true
+code-fold: false
+warning: false
+---
+
+## Introduction
+
+Here we are working on the data from
+Zhang *et al.*
+Short-course chemotherapy with TMC207 and rifapentine in a murine model of
+latent tuberculosis infection.
+*American Journal of Respiratory and Critical Care Medicine* 184.6 (2011): 732-737.
+[10.1164/rccm.201103-0397OC](https://doi.org/10.1164/rccm.201103-0397oc)
+
+The data show the proportion of positive mice as a function of time (about 15
+mice per time point and treatment) but we are interested in is the CFU
+clearance dynamics at the individual level. Since the former is a consequence of
+the latter, we develop a simple model of CFU clearance at the individual level
+from which we compute the consequences at (small-size) population level. By
+confronting the model-predicted consequences at population level with actual
+experimental data, we are able to estimate the two parameters of the model. Once
+the model is calibrated, we can use it to explore what would be the effect of
+decreasing the initial value of CFU on the time at which the individual clear
+the infection.
+
+The model itself is a simple exponential decay model with inter-individual
+variability on the rate of decay that is modelled by a Gamma distribution.
+
+
+## Packages
+
+Loading the packages needed for the analysis:
+
+```{r}
+library(readxl)
+library(dplyr)
+library(purrr)
+library(tidyr)
+library(bbmle)
+```
+
+
+## Utilitary functions
+
+A function that adds proportions estimates and confidence intervals to a data
+frame from a column of successes and a column or trials:
+
+```{r}
+add_prop_est <- function(df, x, n, p = "est", l = "lwr", u = "upr", ...) {
+  df |> 
+    mutate(test   = map2({{ x }}, {{ n }}, prop.test, ...),
+           "{p}" := map_dbl(test, ~ .x[["estimate"]]),
+           conf   = map(test, ~ setNames(.x[["conf.int"]], c(l, u)))) |> 
+    unnest_wider(conf) |> 
+    select(- test)
+}
+```
+
+A reparameterization of `dgamma()`:
+
+```{r}
+dgamma2 <- function(x, mu, sigma) {
+  dgamma(x, mu^2 / sigma^2, scale = sigma^2 / mu)
+}
+```
+
+A reparameterization of `qgamma()`:
+
+```{r}
+qgamma2 <- function(p, mu, sigma) {
+  qgamma(p, mu^2 / sigma^2, scale = sigma^2 / mu)
+}
+```
+
+Tuning `abline()`:
+
+```{r}
+abline2 <- function(...) abline(..., col = "lightgrey")
+```
+
