@@ -32,7 +32,7 @@ Zhang *et al.*
 "Short-course chemotherapy with TMC207 and rifapentine in a murine model of
 latent tuberculosis infection".
 *American Journal of Respiratory and Critical Care Medicine* 184.6 (2011): 732-737.
-[10.1164/rccm.201103-0397OC](https://doi.org/10.1164/rccm.201103-0397oc)
+DOI: [10.1164/rccm.201103-0397OC](https://doi.org/10.1164/rccm.201103-0397oc)
 
 The data show the proportion of positive mice as a function of time (about 15
 mice per time point and treatment) but what we are interested in is the CFU
@@ -483,11 +483,11 @@ add_pred <- function(x, col, t_max, cfu0 = 1e4, alpha = .2, aggregation = 7) {
 }
 ```
 
-The following figure shows the model-predicted expected proportions of positive
+The following function shows the model-predicted expected proportions of positive
 individuals in the population:
 
 ```{r predicted_cfu, dependson = "add_pred"}
-predicted_cfu <- function(t_max = 6 * 30, aggregation = 7, log = FALSE, ...) {
+predicted_cfu <- function(t_max = 6 * 30, aggregation = 7, log = FALSE, cfu0 = 1e4, ...) {
   if (log) {
     plot(NA, xlim = c(0, t_max / aggregation), ylab = "CFU", axes = FALSE,
          ylim = c(1, 1e4), log = "y", ...)
@@ -505,13 +505,15 @@ predicted_cfu <- function(t_max = 6 * 30, aggregation = 7, log = FALSE, ...) {
   }
   axis(1); axis(2)
   
-  add_pred(coef(est_RIF),    col_treatments[2], t_max, aggregation = aggregation)
-  add_pred(coef(est_RIFINH), col_treatments[3], t_max, aggregation = aggregation)
-  add_pred(coef(est_RPTINH), col_treatments[4], t_max, aggregation = aggregation)
+  add_pred(coef(est_RIF),    col_treatments[2], t_max, cfu0, aggregation = aggregation)
+  add_pred(coef(est_RIFINH), col_treatments[3], t_max, cfu0, aggregation = aggregation)
+  add_pred(coef(est_RPTINH), col_treatments[4], t_max, cfu0, aggregation = aggregation)
   
   legend("topright", legend = treatments[-1], col = col_treatments[-1], lwd = line_width)
 }
 ```
+
+Let's try it:
 
 ```{r dependson = "predicted_cfu"}
 predicted_cfu(xlab = "time (weeks)")
@@ -546,3 +548,58 @@ add_mod_pred(coef(est_RPTINH), 4)
 
 legend("topright", legend = treatments, col = col_treatments, lwd = line_width)
 ```
+
+
+## Speculation in humans
+
+Let's see what happens if we change the initial CFU:
+
+```{r}
+predicted_cfu(xlab = "time (weeks)", log = TRUE, cfu0 = 1e4)
+predicted_cfu(xlab = "time (weeks)", log = TRUE, cfu0 = 1e3)
+predicted_cfu(xlab = "time (weeks)", log = TRUE, cfu0 = 1e2)
+```
+
+The following function calculates the time of sterilization:
+
+```{r}
+cfu1_time <- function(x, cfu0 = 1e4, p = .5) {
+  optimize(
+    function(t) abs(log(cfu(cfu0, qgamma2(p, x["mu"], x["sigma"]), t))),
+    c(0, 200)
+  )$minimum
+}
+```
+
+The following function calculate the time of sterilization together with
+confidence interval:
+
+```{r}
+CFU0_effect_cfu1_time <- function(x, cfu0) {
+  map_dfc(c(upper = .025, median = .5, lower = .975), cfu1_time, x = x, cfu0 = cfu0)
+}
+```
+
+```{r}
+add_speculation1 <- function(x, col, alpha = .2) {
+  cfu0_val <- 10^seq(0, 4, le = 512)
+  out <- map_dfr(cfu0_val, CFU0_effect_cfu1_time, x = coef(x))
+  polygon(c(cfu0_val, rev(cfu0_val)), c(out$upper, rev(out$lower)),
+          border = NA, col = adjustcolor(col, .2))
+  lines(cfu0_val, out$median, col = col, lwd = 3)
+}
+```
+
+```{r}
+plot(NA, xlim = 10^c(0, 4), ylim = c(0, 200), log = "x", axes = FALSE,
+     xlab = "initial CFU", ylab = "time of clearance (days)")
+
+abline2(v = unlist(map(10^(0:3), ~ .x * 1:10)))
+abline2(h = 10 * 0:20)
+axis(1); axis(2)
+
+add_speculation1(est_RIF, 2)
+add_speculation1(est_RIFINH, 3)
+add_speculation1(est_RPTINH, 4)
+```
+
