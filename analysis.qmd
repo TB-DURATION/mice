@@ -150,6 +150,16 @@ Tuning `seq()`:
 
 ```{r}
 seq2 <- function(...) seq(..., le = 100)
+seq3 <- function(...) seq(..., le = 512)
+```
+
+Tuning `list()`:
+
+```{r}
+list2 <- function(...) {
+  setNames(c(as.list(environment()), list(...)),
+           map_chr(as.list(match.call())[-1], as.character))
+}
 ```
 
 
@@ -229,7 +239,7 @@ plot_data_prop_est()
 legend2("bottomright", legend = treatments, col = col_treatments, lwd = line_width)
 ```
 
-## A simple model of decay
+## A model of CFU decay
 
 ### Exponential decay
 
@@ -302,7 +312,7 @@ probability <- function(mu, sigma, N0 = 1e4, t, epsilon = 1e-16) {
 }
 ```
 
-Let's try it:
+Let's try it with this function:
 
 ```{r fig.height = .7 * 2 * 5, fig.width  = .7 * 1.4 * 5}
 plot_cfu <- function(mu_val, sigma_val, t_val, col_val, leg) {
@@ -324,15 +334,19 @@ plot_cfu <- function(mu_val, sigma_val, t_val, col_val, leg) {
                               function(x)
                                 as.expression(substitute(sigma == A,
                                                          list(A = as.name(x))))),
-              title = expression(paste("individual variability ", sigma, " (/day):")))
+              title = expression(paste("ind. variability ", sigma, " (/day):")))
   }
 }
+```
 
-opar <- par(mfrow = 2:1)
+Let's look at 2 time points:
+
+```{r fig.height = 4, fig.width  = 1.6 * 5}
+opar <- par(mfrow = 1:2, cex = 1, plt = c(.2, .95, .2, .8))
 
 walk2(c(25, 45),
       c(TRUE, FALSE),
-      ~ plot_cfu(mu_val    = seq(.001, .5, le = 512), # (/day)
+      ~ plot_cfu(mu_val    = seq3(.001, .5), # (/day)
                  sigma_val = c(.01, .05, .11), # (/day)
                  t_val     = .x, # (day)
                  col_val   = col_treatments[-1],
@@ -371,33 +385,54 @@ mLL(mu = .3, sigma = .01, N0 = 1e4, data = filter(table2, group == "RIF"))
 ### Likelihood surfaces
 
 Since we have only 2 parameters, we can easily have a look at the likelihood
-surface. A function that visualizes the likelihood surface:
+surface. A function that calculates the minus log-likelihood values:
+
+```{r calc_mLL}
+calc_mLL <- function(drug, mu_val, sigma_val, N0 = 1e4, epsilon = 1e-16) {
+  mLL_val <- expand.grid(mu_val, sigma_val) |>
+    with(map2_dbl(Var1, Var2, mLL, N0 = N0, data = filter(table2, group == drug),
+                  epsilon = epsilon)) |> 
+    matrix(length(mu_val))
+  list(mu_val = mu_val, sigma_val = sigma_val, mLL_val = mLL_val)
+}
+```
+
+Calculating the minus log-likelihood values:
+
+```{r dependson = "calc_mLL"}
+mLL_INH <- calc_mLL("INH", seq2(.001, .05), seq2(.0001, .012))
+mLL_RIF <- calc_mLL("RIF", seq2(.001, .2), seq2(.0001, .1))
+mLL_RIFINH <- calc_mLL("RIF+INH", seq2(.05, .15), seq2(.0001, .15))
+mLL_RPTINH <- calc_mLL("RPT+INH", seq2(.001, .5), seq2(.0001, .1))
+```
+
+A function that draws the minus log-likelihood surfaces:
 
 ```{r show_mLL}
-show_mLL <- function(drug, mu_val, sigma_val, N0 = 1e4, epsilon = 1e-16, ...) {
-  values <- expand.grid(mu_val, sigma_val)
-  
-  mLL_val <- map2_dbl(values$Var1, values$Var2, mLL, N0 = N0,
-                      data = filter(table2, group == drug), epsilon = epsilon) |> 
-    matrix(length(mu_val))
-  
-  image(mu_val, sigma_val, mLL_val,
-        xlab = expression(paste("within-host mean decay rate ", mu, " (/day)")),
-        ylab = expression(paste("individual variability ", sigma, " (/day)")))
-  contour(mu_val, sigma_val, mLL_val, add = TRUE,
-          levels = c(.002, .01, .1, 1:5), ...)
-  box(bty = "o")
+show_mLL <- function(x, ...) {
+  with(x, {
+    image(mu_val, sigma_val, mLL_val,
+          xlab = expression(paste("within-host mean decay rate ", mu, " (/day)")),
+          ylab = expression(paste("individual variability ", sigma, " (/day)")))
+    contour(mu_val, sigma_val, mLL_val, add = TRUE,
+            levels = c(.002, .01, .1, 1:5), ...)
+    box(bty = "o")
+  })
 }
 ```
 
 Let's try it:
 
-```{r dependson = "show_mLL"}
-show_mLL("INH", seq2(.001, .05), seq2(.0001, .012))
-show_mLL("RIF", seq2(.001, .2), seq2(.0001, .1))
-show_mLL("RIF+INH", seq2(.05, .15), seq2(.0001, .15))
-show_mLL("RPT+INH", seq2(.001, .5), seq2(.0001, .1))
+```{r dependson = "show_mLL", fig.height = 1.3 * 5, fig.width  = 1.5 * 5}
+opar <- par(mfrow = c(2, 2), cex = 1, plt = c(.17, .93, .2, .87))
+
+walk2(list(mLL_INH, mLL_RIF, mLL_RIFINH, mLL_RPTINH),
+      c("INH", "RIF", "RIF+INH", "RPT+INH"),
+      ~ {show_mLL(.x); title(.y, line = .5)})
+
+par(opar)
 ```
+
 
 ### MLE by BFGS
 
@@ -434,11 +469,8 @@ est_RPTINH <- estimations(mu    = .3, sigma = .04,
 Which gives:
 
 ```{r}
-coef(est_RIF)
-coef(est_RIFINH)
-coef(est_RPTINH)
+map_dfr(list2(est_RIF, est_RIFINH, est_RPTINH), coef, .id = "group")
 ```
-
 
 ### Model predictions
 
@@ -463,62 +495,59 @@ plot(NA, xlim = c(0, x_max), ylim = c(0, 25),
 
 c(est_RIF, est_RIFINH, est_RPTINH) |> 
   map(coef) |> 
-  walk2(2:4, add_area)
+  walk2(col_treatments[-1], add_area)
 
-legend("topright", legend = treatments[-1], col = col_treatments[-1], lwd = 2, bty = "n")
+legend2("topright", legend = treatments[-1], col = col_treatments[-1], lwd = 2)
 ```
 
 A function that adds model predictions to a plot:
 
 ```{r add_pred}
 add_pred <- function(x, col, t_max, cfu0 = 1e4, alpha = .2, aggregation = 7) {
-  t_val <- seq(0, t_max, le = 512)
-  q050 <- cfu(cfu0, qgamma2(.500, x["mu"], x["sigma"]), t_val)
-  q025 <- cfu(cfu0, qgamma2(.025, x["mu"], x["sigma"]), t_val)
-  q975 <- cfu(cfu0, qgamma2(.975, x["mu"], x["sigma"]), t_val)
+  t_val <- seq3(0, t_max)
   t_val <- t_val / aggregation
-  polygon(c(t_val, rev(t_val)), c(q025, rev(q975)), border = NA,
-          col = adjustcolor(col, alpha))
-  lines(t_val, q050, col = col, lwd = 2)
+  polygon2(t_val,
+           cfu(cfu0, qgamma2(.025, x["mu"], x["sigma"]), t_val),
+           cfu(cfu0, qgamma2(.975, x["mu"], x["sigma"]), t_val), col = col)
+  lines2(t_val, cfu(cfu0, qgamma2(.500, x["mu"], x["sigma"]), t_val), col = col)
 }
 ```
 
-The following function shows the model-predicted expected proportions of positive
-individuals in the population:
+The following function shows the model-predicted expected proportions of
+positive individuals in the population:
 
 ```{r predicted_cfu, dependson = "add_pred"}
-predicted_cfu <- function(t_max = 6 * 30, aggregation = 7, log = FALSE, cfu0 = 1e4, ...) {
+predicted_cfu <- function(t_max = 6 * 30, agg = 7, log = FALSE, cfu0 = 1e4, ...) {
   if (log) {
-    plot(NA, xlim = c(0, t_max / aggregation), ylab = "CFU", axes = FALSE,
+    plot(NA, xlim = c(0, t_max / agg), ylab = "CFU", axes = FALSE,
          ylim = c(1, 1e4), log = "y", ...)
-    abline2(h = 1:10 * 1e3)
-    abline2(h = 1:10 * 1e2)
-    abline2(h = 1:10 * 10)
-    abline2(h = 2:10)
     abline2(v = 0:30)
-    abline(h = 1)
+    abline2(h = unlist(map(10^(0:3), ~ .x * 1:10)))
   } else {
-    plot(NA, xlim = c(0, t_max / aggregation), ylab = "CFU", axes = FALSE,
+    plot(NA, xlim = c(0, t_max / agg), ylab = "CFU", axes = FALSE,
          ylim = c(0, 1e4), ...)
     abline2(v = 0:30)
     abline2(h = 0:10 * 1e3)
   }
   axis(1); axis(2)
   
-  add_pred(coef(est_RIF),    col_treatments[2], t_max, cfu0, aggregation = aggregation)
-  add_pred(coef(est_RIFINH), col_treatments[3], t_max, cfu0, aggregation = aggregation)
-  add_pred(coef(est_RPTINH), col_treatments[4], t_max, cfu0, aggregation = aggregation)
+  list(est_RIF, est_RIFINH, est_RPTINH) |> 
+    map(coef) |> 
+    walk2(col_treatments[-1], add_pred, t_max, cfu0, aggregation = agg)
   
-  legend("topright", legend = treatments[-1], col = col_treatments[-1], lwd = line_width)
+  legend("topright", legend = treatments[-1],
+         col = col_treatments[-1], lwd = line_width)
 }
 ```
 
 Let's try it:
 
-```{r dependson = "predicted_cfu"}
+```{r dependson = "predicted_cfu", fig.width = 2 * 5, fig.height = 4}
+opar <- par(mfrow = c(1, 3), cex = 1)
 predicted_cfu(xlab = "time (weeks)")
 predicted_cfu(30, 1, xlab = "time (days)")
 predicted_cfu(xlab = "time (weeks)", log = TRUE)
+par(opar)
 ```
 
 A function that adds model-predicted proportions of individual with CFU > 1 in 
@@ -526,13 +555,14 @@ a population of 15 individuals:
 
 ```{r}
 add_mod_pred <- function(x, col, alpha = .2) {
-  t_val <- seq(0, 6 * 30, le = 512)
-  p_val <- map_dbl(t_val, ~ probability(x["mu"], x["sigma"], N0 = 1e4, t = .x, epsilon = 1e-16))
+  t_val <- seq3(0, 6 * 30)
+  p_val <- map_dbl(t_val, ~ probability(x["mu"], x["sigma"],
+                                        N0 = 1e4, t = .x, epsilon = 1e-16))
   t_val <- t_val / 30
-  q025 <- qbinom(.025, 15, p_val) / 15
-  q975 <- qbinom(.975, 15, p_val) / 15
-  polygon(c(t_val, rev(t_val)), c(q025, rev(q975)), border = NA, col = adjustcolor(col, alpha))
-  lines(t_val, qbinom(.5, 15, p_val) / 15, col = col)
+  polygon2(t_val,
+           qbinom(.025, 15, p_val) / 15,
+           qbinom(.975, 15, p_val) / 15, col = col)
+  lines2(t_val, qbinom(.5, 15, p_val) / 15, col = col)
 }
 ```
 
@@ -582,11 +612,10 @@ CFU0_effect_cfu1_time <- function(x, cfu0) {
 
 ```{r}
 add_speculation1 <- function(x, col, alpha = .2) {
-  cfu0_val <- 10^seq(0, 4, le = 512)
+  cfu0_val <- 10^seq3(0, 4)
   out <- map_dfr(cfu0_val, CFU0_effect_cfu1_time, x = coef(x))
-  polygon(c(cfu0_val, rev(cfu0_val)), c(out$upper, rev(out$lower)),
-          border = NA, col = adjustcolor(col, .2))
-  lines(cfu0_val, out$median, col = col, lwd = 3)
+  polygon2(cfu0_val, out$upper, out$lower, col = col)
+  lines2(cfu0_val, out$median, col = col)
 }
 ```
 
