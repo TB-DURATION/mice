@@ -252,39 +252,45 @@ cfu(1e4, .115, 30)
 
 The next step is to consider that the rate of exponential decay varies slightly
 from individual to individual. Let's consider that this inter-individual
-variability follows a Gamma distribution. Next, we want to work out how this
-inter-individual variability translates into a proportion of positive
-individuals in a population of an infinite number of individuals at time $t$
-(positivity being defined as CFU $\ge 1$). This is done by looking at the cumulative
-probability of the Gamma distribution of the decay rate that leads to the
-quantile of the inter-individual CFU distribution that is the closest to 1. To
-do so, we need a function that expresses the distance of the quantile of the
-inter-individual CFU distribution to 1:
+variability follows a Gamma distribution:
+
+$$
+\lambda \sim \mbox{Gamma}(\mu,\sigma)
+$$
+where $\mu$ and $\sigma$ are the mean and standard deviation of the Gamma
+distribution. Next, we want to work out how these $\mu$ and $\sigma$ parameters
+translate into a proportion of positive individuals in a population of an
+infinite number of individuals at time $t$ (positivity being defined as CFU
+$\ge 1$). This is done by looking at the cumulative probability of the Gamma
+distribution of the decay rate that leads to the quantile of the
+inter-individual CFU distribution that is the closest to 1. To do so, we need a
+function that expresses the distance of the quantile of the inter-individual CFU
+distribution to 1:
 
 ```{r}
-dist_to_1 <- function(p, lambda, sigma, N0, t) {
-  abs(1 - cfu(N0, qgamma2(p, lambda, sigma), t))
+dist_to_1 <- function(p, mu, sigma, N0, t) {
+  abs(1 - cfu(N0, qgamma2(p, mu, sigma), t))
 }
 ```
 
 We then use this function in the following function that converts values for
-$\lambda$ and $\sigma$ of the Gamma distribution of the inter-individual
+$\mu$ and $\sigma$ of the Gamma distribution of the inter-individual
 variability of exponential decay rate into the probability parameter of a
 binomial distribution that corresponds to the expected proportion of positive
 individuals in the population:
 
 ```{r}
-probability <- function(lambda, sigma, N0 = 1e4, t, epsilon = 1e-16) {
-  upr <- cfu(N0, qgamma2(epsilon, lambda, sigma), t)
+probability <- function(mu, sigma, N0 = 1e4, t, epsilon = 1e-16) {
+  upr <- cfu(N0, qgamma2(epsilon, mu, sigma), t)
   if (upr < 1) {
     return(0)
   } else {
-    lwr <- cfu(N0, qgamma2(1 - epsilon, lambda, sigma), t)
+    lwr <- cfu(N0, qgamma2(1 - epsilon, mu, sigma), t)
     if (lwr > 1) {
       return(1)
     }
     else {
-      optimize(dist_to_1, 0:1, lambda = lambda, sigma = sigma, N0 = N0, t = t)$minimum
+      optimize(dist_to_1, 0:1, mu = mu, sigma = sigma, N0 = N0, t = t)$minimum
     }
   }
 }
@@ -293,17 +299,17 @@ probability <- function(lambda, sigma, N0 = 1e4, t, epsilon = 1e-16) {
 Let's try it:
 
 ```{r fig.height = .7 * 2 * 5, fig.width  = .7 * 1.4 * 5}
-plot_cfu <- function(lambda_val, sigma_val, t_val, col_val, leg) {
+plot_cfu <- function(mu_val, sigma_val, t_val, col_val, leg) {
   plot(NA, xlim = c(0, .5), ylim = 0:1,
-       xlab = expression(paste("within-host mean decay rate ", lambda, " (/day)")),
+       xlab = expression(paste("within-host mean decay rate ", mu, " (/day)")),
        ylab = "in infinite population",
        main = paste("t =", t_val))
   
   mtext("proportion positive", 2, 2.5)
 
   walk2(sigma_val, col_val,
-        ~ lines2(lambda_val,
-                 map_dbl(lambda_val, probability, sigma = .x, t = t_val),
+        ~ lines2(mu_val,
+                 map_dbl(mu_val, probability, sigma = .x, t = t_val),
                  col = .y))
   
   if (leg) {
@@ -320,11 +326,11 @@ opar <- par(mfrow = 2:1)
 
 walk2(c(25, 45),
       c(TRUE, FALSE),
-      ~ plot_cfu(lambda_val = seq(.001, .5, le = 512), # (/day)
-                 sigma_val  = c(.01, .05, .11), # (/day)
-                 t_val      = .x, # (day)
-                 col_val    = col_treatments[-1],
-                 leg        = .y))
+      ~ plot_cfu(mu_val    = seq(.001, .5, le = 512), # (/day)
+                 sigma_val = c(.01, .05, .11), # (/day)
+                 t_val     = .x, # (day)
+                 col_val   = col_treatments[-1],
+                 leg       = .y))
 
 par(opar)
 ```
@@ -340,12 +346,12 @@ likelihood:
 ```{r}
 threshold <- - log(1e-16)
 
-mLL <- function(lambda, sigma, N0, data, epsilon = 1e-16) {
+mLL <- function(mu, sigma, N0, data, epsilon = 1e-16) {
   min(threshold,
       - sum(dbinom(data$positive,
                    data$total,
                    map_dbl(data$duration,
-                           ~ probability(lambda, sigma, N0, .x * 30, epsilon)),
+                           ~ probability(mu, sigma, N0, .x * 30, epsilon)),
                    TRUE)))
 }
 ```
@@ -353,7 +359,7 @@ mLL <- function(lambda, sigma, N0, data, epsilon = 1e-16) {
 Let's try it:
 
 ```{r}
-mLL(lambda = .3, sigma = .01, N0 = 1e4, data = filter(table2, group == "RIF"))
+mLL(mu = .3, sigma = .01, N0 = 1e4, data = filter(table2, group == "RIF"))
 ```
 
 ### Likelihood surfaces
@@ -362,17 +368,17 @@ Since we have only 2 parameters, we can easily have a look at the likelihood
 surface. A function that visualizes the likelihood surface:
 
 ```{r show_mLL}
-show_mLL <- function(drug, lambda_val, sigma_val, N0 = 1e4, epsilon = 1e-16, ...) {
-  values <- expand.grid(lambda_val, sigma_val)
+show_mLL <- function(drug, mu_val, sigma_val, N0 = 1e4, epsilon = 1e-16, ...) {
+  values <- expand.grid(mu_val, sigma_val)
   
   mLL_val <- map2_dbl(values$Var1, values$Var2, mLL, N0 = N0,
                       data = filter(table2, group == drug), epsilon = epsilon) |> 
-    matrix(length(lambda_val))
+    matrix(length(mu_val))
   
-  image(lambda_val, sigma_val, mLL_val,
-        xlab = expression(paste("within-host mean decay rate ", lambda, " (/day)")),
+  image(mu_val, sigma_val, mLL_val,
+        xlab = expression(paste("within-host mean decay rate ", mu, " (/day)")),
         ylab = expression(paste("individual variability ", sigma, " (/day)")))
-  contour(lambda_val, sigma_val, mLL_val, add = TRUE,
+  contour(mu_val, sigma_val, mLL_val, add = TRUE,
           levels = c(.002, .01, .1, 1:5), ...)
   box(bty = "o")
 }
@@ -392,10 +398,10 @@ show_mLL("RPT+INH", seq2(.001, .5), seq2(.0001, .1))
 A function that performs estimations using the BFGS quasi-Newton algorithm:
 
 ```{r}
-estimations <- function(lambda, sigma, lower, upper, drug, N0 = 1e4, epsilon = 1e-16) {
+estimations <- function(mu, sigma, lower, upper, drug, N0 = 1e4, epsilon = 1e-16) {
   data <- filter(table2, group == drug)
-  mle2(function(lambda, sigma) mLL(lambda, sigma, N0, data, epsilon),
-       list(lambda = lambda, sigma = sigma), "L-BFGS-B",
+  mle2(function(mu, sigma) mLL(mu, sigma, N0, data, epsilon),
+       list(mu = mu, sigma = sigma), "L-BFGS-B",
        lower = lower, upper = upper)
 }
 ```
@@ -403,20 +409,20 @@ estimations <- function(lambda, sigma, lower, upper, drug, N0 = 1e4, epsilon = 1
 Let's use it:
 
 ```{r warning = FALSE}
-est_RIF    <- estimations(lambda = .08, sigma = .02,
-                          lower  = c(lambda = .06, sigma = .01),
-                          upper  = c(lambda = .09, sigma = .05),
-                          drug   = "RIF")
+est_RIF    <- estimations(mu    = .08, sigma = .02,
+                          lower = c(mu = .06, sigma = .01),
+                          upper = c(mu = .09, sigma = .05),
+                          drug  = "RIF")
 
-est_RIFINH <- estimations(lambda = .11, sigma = .04,
-                          lower  = c(lambda = .09, sigma = .02),
-                          upper  = c(lambda = .11, sigma = .05),
-                          drug   = "RIF+INH")
+est_RIFINH <- estimations(mu    = .11, sigma = .04,
+                          lower = c(mu = .09, sigma = .02),
+                          upper = c(mu = .11, sigma = .05),
+                          drug  = "RIF+INH")
 
-est_RPTINH <- estimations(lambda = .3, sigma = .04,
-                          lower  = c(lambda = .28, sigma = .01),
-                          upper  = c(lambda = .32, sigma = .08),
-                          drug   = "RPT+INH")
+est_RPTINH <- estimations(mu    = .3, sigma = .04,
+                          lower = c(mu = .28, sigma = .01),
+                          upper = c(mu = .32, sigma = .08),
+                          drug  = "RPT+INH")
 ```
 
 Which gives:
@@ -438,7 +444,7 @@ x_max <- .45
 x_val <- seq(0, x_max, le = 512)
 
 add_lines <- function(x, col) {
-  lines2(x_val, dgamma2(x_val, x["lambda"], x["sigma"]), col = col)
+  lines2(x_val, dgamma2(x_val, x["mu"], x["sigma"]), col = col)
 }
 
 plot(NA, xlim = c(0, x_max), ylim = c(0, 25),
