@@ -440,19 +440,24 @@ The following figure shows the estimated inter-individual variability of the
 exponential decay rate:
 
 ```{r}
+nb_pts <- 512
 x_max <- .45
-x_val <- seq(0, x_max, le = 512)
+x_val <- seq(0, x_max, le = nb_pts)
+y2 <- rep(0, nb_pts)
 
-add_lines <- function(x, col) {
-  lines2(x_val, dgamma2(x_val, x["mu"], x["sigma"]), col = col)
+add_area <- function(x, col) {
+  y1 <- dgamma2(x_val, x["mu"], x["sigma"])
+  polygon2(x_val, y1, y2, col = col)
+  lines2(x_val, y1, col = col)
 }
 
 plot(NA, xlim = c(0, x_max), ylim = c(0, 25),
-     xlab = "decay rate (/day)", ylab = "density of probability")
+     xlab = expression(paste("decay rate ", lambda, " (/day)")),
+     ylab = "density of probability")
 
 c(est_RIF, est_RIFINH, est_RPTINH) |> 
   map(coef) |> 
-  walk2(2:4, add_lines)
+  walk2(2:4, add_area)
 
 legend("topright", legend = treatments[-1], col = col_treatments[-1], lwd = 2, bty = "n")
 ```

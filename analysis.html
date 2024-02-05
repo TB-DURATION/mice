@@ -522,22 +522,27 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="model-predictions" class="level3" data-number="6.4">
 <h3 data-number="6.4" class="anchored" data-anchor-id="model-predictions"><span class="header-section-number">6.4</span> Model predictions</h3>
 <p>The following figure shows the estimated inter-individual variability of the exponential decay rate:</p>
-<div class="cell" data-layout-align="center" data-hash="analysis_cache/html/unnamed-chunk-31_6dbac274a5f497a592ee82259c64b03d">
-<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>x_max <span class="ot">&lt;-</span> .<span class="dv">45</span></span>
-<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a>x_val <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">0</span>, x_max, <span class="at">le =</span> <span class="dv">512</span>)</span>
-<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-4"><a href="#cb47-4" aria-hidden="true" tabindex="-1"></a>add_lines <span class="ot">&lt;-</span> <span class="cf">function</span>(x, col) {</span>
-<span id="cb47-5"><a href="#cb47-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">lines2</span>(x_val, <span class="fu">dgamma2</span>(x_val, x[<span class="st">"mu"</span>], x[<span class="st">"sigma"</span>]), <span class="at">col =</span> col)</span>
-<span id="cb47-6"><a href="#cb47-6" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb47-7"><a href="#cb47-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-8"><a href="#cb47-8" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="cn">NA</span>, <span class="at">xlim =</span> <span class="fu">c</span>(<span class="dv">0</span>, x_max), <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">25</span>),</span>
-<span id="cb47-9"><a href="#cb47-9" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">"decay rate (/day)"</span>, <span class="at">ylab =</span> <span class="st">"density of probability"</span>)</span>
-<span id="cb47-10"><a href="#cb47-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-11"><a href="#cb47-11" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(est_RIF, est_RIFINH, est_RPTINH) <span class="sc">|&gt;</span> </span>
-<span id="cb47-12"><a href="#cb47-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">map</span>(coef) <span class="sc">|&gt;</span> </span>
-<span id="cb47-13"><a href="#cb47-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">walk2</span>(<span class="dv">2</span><span class="sc">:</span><span class="dv">4</span>, add_lines)</span>
-<span id="cb47-14"><a href="#cb47-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-15"><a href="#cb47-15" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">"topright"</span>, <span class="at">legend =</span> treatments[<span class="sc">-</span><span class="dv">1</span>], <span class="at">col =</span> col_treatments[<span class="sc">-</span><span class="dv">1</span>], <span class="at">lwd =</span> <span class="dv">2</span>, <span class="at">bty =</span> <span class="st">"n"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-layout-align="center" data-hash="analysis_cache/html/unnamed-chunk-31_6dbee62d473f1455b036cd7d7888291e">
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>nb_pts <span class="ot">&lt;-</span> <span class="dv">512</span></span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a>x_max <span class="ot">&lt;-</span> .<span class="dv">45</span></span>
+<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a>x_val <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">0</span>, x_max, <span class="at">le =</span> nb_pts)</span>
+<span id="cb47-4"><a href="#cb47-4" aria-hidden="true" tabindex="-1"></a>y2 <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">0</span>, nb_pts)</span>
+<span id="cb47-5"><a href="#cb47-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-6"><a href="#cb47-6" aria-hidden="true" tabindex="-1"></a>add_area <span class="ot">&lt;-</span> <span class="cf">function</span>(x, col) {</span>
+<span id="cb47-7"><a href="#cb47-7" aria-hidden="true" tabindex="-1"></a>  y1 <span class="ot">&lt;-</span> <span class="fu">dgamma2</span>(x_val, x[<span class="st">"mu"</span>], x[<span class="st">"sigma"</span>])</span>
+<span id="cb47-8"><a href="#cb47-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">polygon2</span>(x_val, y1, y2, <span class="at">col =</span> col)</span>
+<span id="cb47-9"><a href="#cb47-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">lines2</span>(x_val, y1, <span class="at">col =</span> col)</span>
+<span id="cb47-10"><a href="#cb47-10" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb47-11"><a href="#cb47-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-12"><a href="#cb47-12" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="cn">NA</span>, <span class="at">xlim =</span> <span class="fu">c</span>(<span class="dv">0</span>, x_max), <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">25</span>),</span>
+<span id="cb47-13"><a href="#cb47-13" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="fu">expression</span>(<span class="fu">paste</span>(<span class="st">"decay rate "</span>, lambda, <span class="st">" (/day)"</span>)),</span>
+<span id="cb47-14"><a href="#cb47-14" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylab =</span> <span class="st">"density of probability"</span>)</span>
+<span id="cb47-15"><a href="#cb47-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-16"><a href="#cb47-16" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(est_RIF, est_RIFINH, est_RPTINH) <span class="sc">|&gt;</span> </span>
+<span id="cb47-17"><a href="#cb47-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">map</span>(coef) <span class="sc">|&gt;</span> </span>
+<span id="cb47-18"><a href="#cb47-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">walk2</span>(<span class="dv">2</span><span class="sc">:</span><span class="dv">4</span>, add_area)</span>
+<span id="cb47-19"><a href="#cb47-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-20"><a href="#cb47-20" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">"topright"</span>, <span class="at">legend =</span> treatments[<span class="sc">-</span><span class="dv">1</span>], <span class="at">col =</span> col_treatments[<span class="sc">-</span><span class="dv">1</span>], <span class="at">lwd =</span> <span class="dv">2</span>, <span class="at">bty =</span> <span class="st">"n"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
