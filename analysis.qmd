@@ -109,7 +109,7 @@ qgamma2 <- function(p, mu, sigma) {
 Tuning `abline()`:
 
 ```{r}
-abline2 <- function(...) abline(..., col = "lightgrey")
+abline2 <- function(...) abline(..., col = "antiquewhite")
 ```
 
 Tuning `legend()`:
@@ -207,21 +207,27 @@ plot_prop_est <- function(x, col, polyg = TRUE, connect = TRUE) {
 }
 ```
 
-The plot showing points estimates with confidence intervals from the data:
+A function that plots the proportions estimates from the data:
 
-```{r dependson = "plot_prop_est"}
-plot(NA, xlim = c(0, 6), ylim = 0:1,
+```{r plot_data_prop_est, dependson = "plot_prop_est"}
+plot_data_prop_est <- function(polyg = TRUE, connect = TRUE) {
+  plot(NA, xlim = c(0, 6), ylim = 0:1,
      xlab = "duration of treatment (months)",
      ylab = "proportion of positive mice")
 
-table2a |> 
-  group_by(group) |> 
-  group_split() |> 
-  walk2(col_treatments, plot_prop_est)
-
-legend2("bottomright", legend = treatments, col = col_treatments, lwd = line_width)
+  table2a |> 
+    group_by(group) |> 
+    group_split() |> 
+    walk2(col_treatments, plot_prop_est, polyg, connect)
+}
 ```
 
+The plot showing points estimates with confidence intervals from the data:
+
+```{r dependson = "plot_data_prop_est"}
+plot_data_prop_est()
+legend2("bottomright", legend = treatments, col = col_treatments, lwd = line_width)
+```
 
 ## A simple model of decay
 
@@ -462,3 +468,81 @@ c(est_RIF, est_RIFINH, est_RPTINH) |>
 legend("topright", legend = treatments[-1], col = col_treatments[-1], lwd = 2, bty = "n")
 ```
 
+A function that adds model predictions to a plot:
+
+```{r add_pred}
+add_pred <- function(x, col, t_max, cfu0 = 1e4, alpha = .2, aggregation = 7) {
+  t_val <- seq(0, t_max, le = 512)
+  q050 <- cfu(cfu0, qgamma2(.500, x["mu"], x["sigma"]), t_val)
+  q025 <- cfu(cfu0, qgamma2(.025, x["mu"], x["sigma"]), t_val)
+  q975 <- cfu(cfu0, qgamma2(.975, x["mu"], x["sigma"]), t_val)
+  t_val <- t_val / aggregation
+  polygon(c(t_val, rev(t_val)), c(q025, rev(q975)), border = NA,
+          col = adjustcolor(col, alpha))
+  lines(t_val, q050, col = col, lwd = 2)
+}
+```
+
+The following figure shows the model-predicted expected proportions of positive
+individuals in the population:
+
+```{r predicted_cfu, dependson = "add_pred"}
+predicted_cfu <- function(t_max = 6 * 30, aggregation = 7, log = FALSE, ...) {
+  if (log) {
+    plot(NA, xlim = c(0, t_max / aggregation), ylab = "CFU", axes = FALSE,
+         ylim = c(1, 1e4), log = "y", ...)
+    abline2(h = 1:10 * 1e3)
+    abline2(h = 1:10 * 1e2)
+    abline2(h = 1:10 * 10)
+    abline2(h = 2:10)
+    abline2(v = 0:30)
+    abline(h = 1)
+  } else {
+    plot(NA, xlim = c(0, t_max / aggregation), ylab = "CFU", axes = FALSE,
+         ylim = c(0, 1e4), ...)
+    abline2(v = 0:30)
+    abline2(h = 0:10 * 1e3)
+  }
+  axis(1); axis(2)
+  
+  add_pred(coef(est_RIF),    col_treatments[2], t_max, aggregation = aggregation)
+  add_pred(coef(est_RIFINH), col_treatments[3], t_max, aggregation = aggregation)
+  add_pred(coef(est_RPTINH), col_treatments[4], t_max, aggregation = aggregation)
+  
+  legend("topright", legend = treatments[-1], col = col_treatments[-1], lwd = line_width)
+}
+```
+
+```{r dependson = "predicted_cfu"}
+predicted_cfu(xlab = "time (weeks)")
+predicted_cfu(30, 1, xlab = "time (days)")
+predicted_cfu(xlab = "time (weeks)", log = TRUE)
+```
+
+A function that adds model-predicted proportions of individual with CFU > 1 in 
+a population of 15 individuals:
+
+```{r}
+add_mod_pred <- function(x, col, alpha = .2) {
+  t_val <- seq(0, 6 * 30, le = 512)
+  p_val <- map_dbl(t_val, ~ probability(x["mu"], x["sigma"], N0 = 1e4, t = .x, epsilon = 1e-16))
+  t_val <- t_val / 30
+  q025 <- qbinom(.025, 15, p_val) / 15
+  q975 <- qbinom(.975, 15, p_val) / 15
+  polygon(c(t_val, rev(t_val)), c(q025, rev(q975)), border = NA, col = adjustcolor(col, alpha))
+  lines(t_val, qbinom(.5, 15, p_val) / 15, col = col)
+}
+```
+
+Proportion of individuals with CFU > 1 as a function of time in a population of
+15 individuals:
+
+```{r dependson = "plot_data_prop_est"}
+plot_data_prop_est(FALSE, FALSE)
+
+add_mod_pred(coef(est_RIF), 2)
+add_mod_pred(coef(est_RIFINH), 3)
+add_mod_pred(coef(est_RPTINH), 4)
+
+legend("topright", legend = treatments, col = col_treatments, lwd = line_width)
+```
