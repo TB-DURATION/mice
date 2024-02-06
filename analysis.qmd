@@ -106,16 +106,25 @@ qgamma2 <- function(p, mu, sigma) {
 }
 ```
 
-Tuning `abline()`:
+A function that adds legend:
 
 ```{r}
-abline2 <- function(...) abline(..., col = "antiquewhite")
+add_legend <- function(where = "topright", ...) {
+  legend(where, legend = c("RIF", "RIF+INH", "RPT+INH"),
+         col = col_treatments[-1], lwd = line_width, ...)
+} 
 ```
 
 Tuning `legend()`:
 
 ```{r}
 legend2 <- function(...) legend(..., bty = "n")
+```
+
+Tuning `abline()`:
+
+```{r}
+abline2 <- function(...) abline(..., col = "antiquewhite")
 ```
 
 Tuning `point()`:
@@ -505,11 +514,11 @@ A function that adds model predictions to a plot:
 ```{r add_pred}
 add_pred <- function(x, col, t_max, cfu0 = 1e4, alpha = .2, aggregation = 7) {
   t_val <- seq3(0, t_max)
-  t_val <- t_val / aggregation
-  polygon2(t_val,
+  t_val2 <- t_val / aggregation
+  polygon2(t_val2,
            cfu(cfu0, qgamma2(.025, x["mu"], x["sigma"]), t_val),
            cfu(cfu0, qgamma2(.975, x["mu"], x["sigma"]), t_val), col = col)
-  lines2(t_val, cfu(cfu0, qgamma2(.500, x["mu"], x["sigma"]), t_val), col = col)
+  lines2(t_val2, cfu(cfu0, qgamma2(.500, x["mu"], x["sigma"]), t_val), col = col)
 }
 ```
 
@@ -534,17 +543,15 @@ predicted_cfu <- function(t_max = 6 * 30, agg = 7, log = FALSE, cfu0 = 1e4, ...)
   list(est_RIF, est_RIFINH, est_RPTINH) |> 
     map(coef) |> 
     walk2(col_treatments[-1], add_pred, t_max, cfu0, aggregation = agg)
-  
-  legend("topright", legend = treatments[-1],
-         col = col_treatments[-1], lwd = line_width)
 }
 ```
 
 Let's try it:
 
-```{r dependson = "predicted_cfu", fig.width = 2 * 5, fig.height = 4}
-opar <- par(mfrow = c(1, 3), cex = 1)
+```{r dependson = "predicted_cfu", fig.width = 1.7 * 5, fig.height = 3.1}
+opar <- par(mfrow = c(1, 3), cex = 1, plt = c(.2, .95, .1983, .8947))
 predicted_cfu(xlab = "time (weeks)")
+add_legend()
 predicted_cfu(30, 1, xlab = "time (days)")
 predicted_cfu(xlab = "time (weeks)", log = TRUE)
 par(opar)
@@ -584,10 +591,13 @@ legend("topright", legend = treatments, col = col_treatments, lwd = line_width)
 
 Let's see what happens if we change the initial CFU:
 
-```{r}
+```{r fig.width = 1.7 * 5, fig.height = 3.1}
+opar <- par(mfrow = c(1, 3), cex = 1, plt = c(.2, .95, .1983, .8947))
 predicted_cfu(xlab = "time (weeks)", log = TRUE, cfu0 = 1e4)
 predicted_cfu(xlab = "time (weeks)", log = TRUE, cfu0 = 1e3)
 predicted_cfu(xlab = "time (weeks)", log = TRUE, cfu0 = 1e2)
+add_legend()
+par(opar)
 ```
 
 The following function calculates the time of sterilization:
@@ -630,5 +640,7 @@ axis(1); axis(2)
 add_speculation1(est_RIF, 2)
 add_speculation1(est_RIFINH, 3)
 add_speculation1(est_RPTINH, 4)
+
+add_legend("topleft")
 ```
 
