@@ -106,6 +106,25 @@ qgamma2 <- function(p, mu, sigma) {
 }
 ```
 
+A function that draw a plot frame:
+
+```{r}
+plot_frame <- function(t_max = 6 * 30, agg = 7, log = FALSE, ...) {
+  if (log) {
+    plot(NA, xlim = c(0, t_max / agg), ylab = "CFU", axes = FALSE,
+         ylim = c(1, 1e4), log = "y", ...)
+    abline2(v = 0:30)
+    abline2(h = unlist(map(10^(0:3), ~ .x * 1:10)))
+  } else {
+    plot(NA, xlim = c(0, t_max / agg), ylab = "CFU", axes = FALSE,
+         ylim = c(0, 1e4), ...)
+    abline2(v = 0:30)
+    abline2(h = 0:10 * 1e3)
+  }
+  axis(1); axis(2)
+}
+```
+
 A function that adds legend:
 
 ```{r}
@@ -169,6 +188,12 @@ list2 <- function(...) {
   setNames(c(as.list(environment()), list(...)),
            map_chr(as.list(match.call())[-1], as.character))
 }
+```
+
+Tuning `title()`:
+
+```{r}
+title2 <- function(...) title(..., line = .5)
 ```
 
 
@@ -437,7 +462,7 @@ opar <- par(mfrow = c(2, 2), cex = 1, plt = c(.17, .93, .2, .87))
 
 walk2(list(mLL_INH, mLL_RIF, mLL_RIFINH, mLL_RPTINH),
       c("INH", "RIF", "RIF+INH", "RPT+INH"),
-      ~ {show_mLL(.x); title(.y, line = .5)})
+      ~ {show_mLL(.x); title2(.y)})
 
 par(opar)
 ```
@@ -527,19 +552,7 @@ positive individuals in the population:
 
 ```{r predicted_cfu, dependson = "add_pred"}
 predicted_cfu <- function(t_max = 6 * 30, agg = 7, log = FALSE, cfu0 = 1e4, ...) {
-  if (log) {
-    plot(NA, xlim = c(0, t_max / agg), ylab = "CFU", axes = FALSE,
-         ylim = c(1, 1e4), log = "y", ...)
-    abline2(v = 0:30)
-    abline2(h = unlist(map(10^(0:3), ~ .x * 1:10)))
-  } else {
-    plot(NA, xlim = c(0, t_max / agg), ylab = "CFU", axes = FALSE,
-         ylim = c(0, 1e4), ...)
-    abline2(v = 0:30)
-    abline2(h = 0:10 * 1e3)
-  }
-  axis(1); axis(2)
-  
+  plot_frame(t_max = t_max, agg = agg, log = log, ...)
   list(est_RIF, est_RIFINH, est_RPTINH) |> 
     map(coef) |> 
     walk2(col_treatments[-1], add_pred, t_max, cfu0, aggregation = agg)
@@ -578,25 +591,51 @@ Proportion of individuals with CFU > 1 as a function of time in a population of
 
 ```{r dependson = "plot_data_prop_est"}
 plot_data_prop_est(FALSE, FALSE)
-
-add_mod_pred(coef(est_RIF), 2)
-add_mod_pred(coef(est_RIFINH), 3)
-add_mod_pred(coef(est_RPTINH), 4)
-
+add_mod_pred(coef(est_RIF), col_treatments[2])
+add_mod_pred(coef(est_RIFINH), col_treatments[3])
+add_mod_pred(coef(est_RPTINH), col_treatments[4])
 legend("topright", legend = treatments, col = col_treatments, lwd = line_width)
 ```
 
 
-## Speculation in humans
+## Speculations in humans
 
 Let's see what happens if we change the initial CFU:
 
 ```{r fig.width = 1.7 * 5, fig.height = 3.1}
 opar <- par(mfrow = c(1, 3), cex = 1, plt = c(.2, .95, .1983, .8947))
-predicted_cfu(xlab = "time (weeks)", log = TRUE, cfu0 = 1e4)
-predicted_cfu(xlab = "time (weeks)", log = TRUE, cfu0 = 1e3)
-predicted_cfu(xlab = "time (weeks)", log = TRUE, cfu0 = 1e2)
+walk(10^(4:2), ~ predicted_cfu(xlab = "time (weeks)", log = TRUE, cfu0 = .x))
 add_legend()
+par(opar)
+```
+
+Another version of the `predicted_cfu2()` function:
+
+```{r predicted_cfu2, dependson = "add_pred"}
+predicted_cfu2 <- function(t_max = 6 * 30, agg = 7, log = FALSE,
+                           cfu0 = 10^(2:4), est_drug, col, ...) {
+  plot_frame(t_max = t_max, agg = agg, log = log, ...)
+  walk(cfu0, add_pred,
+       x = coef(est_drug), col = col, t_max = t_max, alpha = .2, aggregation = agg)
+}
+```
+
+Another way to look at the effect of initial CFU on the decay:
+
+```{r dependson = "predicted_cfu2", fig.width = 1.7 * 5, fig.height = 3.1}
+predicted_cfu2_tmp <- function(...) {
+  predicted_cfu2(..., log = TRUE, xlab = "time (weeks)")
+}
+
+opar <- par(mfrow = c(1, 3), cex = 1, plt = c(.2, .95, .1983, .8947))
+
+predicted_cfu2_tmp(est_drug = est_RIF,    col = col_treatments[2])
+title2("RIF")
+predicted_cfu2_tmp(est_drug = est_RIFINH, col = col_treatments[3])
+title2("RIF+INH")
+predicted_cfu2_tmp(est_drug = est_RPTINH, col = col_treatments[4])
+title2("RPT+INH")
+
 par(opar)
 ```
 
@@ -630,17 +669,30 @@ add_speculation1 <- function(x, col, alpha = .2) {
 ```
 
 ```{r}
-plot(NA, xlim = 10^c(0, 4), ylim = c(0, 200), log = "x", axes = FALSE,
-     xlab = "initial CFU", ylab = "time of clearance (days)")
-
-abline2(v = unlist(map(10^(0:3), ~ .x * 1:10)))
-abline2(h = 10 * 0:20)
-axis(1); axis(2)
-
-add_speculation1(est_RIF, 2)
-add_speculation1(est_RIFINH, 3)
-add_speculation1(est_RPTINH, 4)
-
-add_legend("topleft")
+add_speculation2 <- function(v_val = unlist(map(10^(0:3), ~ .x * 1:10)),
+                             h_val = 10 * 0:20) {
+  abline2(v = v_val); abline2(h = h_val)
+  axis(1); axis(2)
+  walk2(list(est_RIF, est_RIFINH, est_RPTINH), col_treatments[-1], add_speculation1)
+}
 ```
 
+```{r fig.width = 1.7 * 5, fig.height = 3.1}
+opar <- par(mfrow = c(1, 3), cex = 1, plt = c(.2, .95, .1983, .8947))
+
+plot_tmp <- function(...) {
+  plot(..., axes = FALSE, xlab = "initial CFU", ylab = "time of clearance (days)")
+}
+
+plot_tmp(NA, xlim = 10^c(0, 4), ylim = c(0, 200), log = "x")
+add_speculation2()
+add_legend("topleft")
+
+plot_tmp(NA, xlim = c(1, 50), ylim = c(0, 100))
+add_speculation2(v_val = seq(0, 50, 5))
+
+plot_tmp(NA, xlim = c(1, 10), ylim = c(0, 50))
+add_speculation2(h_val = seq(0, 50, 5))
+
+par(opar)
+```
