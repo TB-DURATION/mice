@@ -327,13 +327,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>The plot showing points estimates with confidence intervals from the data:</p>
-<div class="cell" data-layout-align="center" data-hash="analysis_cache/html/unnamed-chunk-23_1fbf3552ba9c60b4c58d58a4c9b8c3af">
+<div class="cell" data-layout-align="center" data-hash="analysis_cache/html/fig-charts_9fe17e9aed36869e41bd2498010edc6a">
 <div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_data_prop_est</span>()</span>
 <span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="fu">legend2</span>(<span class="st">"bottomright"</span>, <span class="at">legend =</span> treatments, <span class="at">col =</span> col_treatments, <span class="at">lwd =</span> line_width)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
+<div id="fig-charts" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure">
-<p><img src="analysis_files/figure-html/unnamed-chunk-23-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="analysis_files/figure-html/fig-charts-1.png" class="img-fluid figure-img" width="672"></p>
+<figcaption class="figure-caption">Figure&nbsp;1: experimental proportions of positive (<span class="math inline">\(n\)</span> = 15) for the 4 treatments of Table 2 of <a href="https://doi.org/10.1164/rccm.201103-0397oc">10.1164/rccm.201103-0397OC</a>.</figcaption>
 </figure>
 </div>
 </div>
@@ -415,7 +416,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb34-22"><a href="#cb34-22" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Let’s look at 2 time points:</p>
-<div class="cell" data-layout-align="center" data-hash="analysis_cache/html/unnamed-chunk-29_4dfdf06dfaa1a9ff58475525abeea8f6">
+<div class="cell" data-layout-align="center" data-hash="analysis_cache/html/fig-model-predictions_2a31b7de52e765c548874278ae9a4458">
 <div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>opar <span class="ot">&lt;-</span> <span class="fu">par</span>(<span class="at">mfrow =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>, <span class="at">cex =</span> <span class="dv">1</span>, <span class="at">plt =</span> <span class="fu">c</span>(.<span class="dv">2</span>, .<span class="dv">95</span>, .<span class="dv">2</span>, .<span class="dv">8</span>))</span>
 <span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a><span class="fu">walk2</span>(<span class="fu">c</span>(<span class="dv">25</span>, <span class="dv">45</span>),</span>
@@ -424,15 +425,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a>                 <span class="at">sigma_val =</span> <span class="fu">c</span>(.<span class="dv">01</span>, .<span class="dv">05</span>, .<span class="dv">11</span>), <span class="co"># (/day)</span></span>
 <span id="cb35-7"><a href="#cb35-7" aria-hidden="true" tabindex="-1"></a>                 <span class="at">t_val     =</span> .x, <span class="co"># (day)</span></span>
 <span id="cb35-8"><a href="#cb35-8" aria-hidden="true" tabindex="-1"></a>                 <span class="at">col_val   =</span> col_treatments[<span class="sc">-</span><span class="dv">1</span>],</span>
-<span id="cb35-9"><a href="#cb35-9" aria-hidden="true" tabindex="-1"></a>                 <span class="at">leg       =</span> .y))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb35-9"><a href="#cb35-9" aria-hidden="true" tabindex="-1"></a>                 <span class="at">leg       =</span> .y))</span>
+<span id="cb35-10"><a href="#cb35-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-11"><a href="#cb35-11" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(opar)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
+<div id="fig-model-predictions" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure">
-<p><img src="analysis_files/figure-html/unnamed-chunk-29-1.png" class="img-fluid figure-img" width="768"></p>
+<p><img src="analysis_files/figure-html/fig-model-predictions-1.png" class="img-fluid figure-img" width="768"></p>
+<figcaption class="figure-caption">Figure&nbsp;2: model-predicted proportion of positive in an population of infinite size as a function of (a) mean decay rate (<span class="math inline">\(x\)</span>-axis), (b) inter-individual variability (3 lines), and (c) time (2 panels).</figcaption>
 </figure>
 </div>
 </div>
-<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(opar)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 </section>
@@ -442,20 +445,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h3 data-number="6.1" class="anchored" data-anchor-id="likelihood-function"><span class="header-section-number">6.1</span> Likelihood function</h3>
 <p>The first step consists in expressing a function that computes minus log likelihood:</p>
 <div class="cell" data-layout-align="center" data-hash="analysis_cache/html/unnamed-chunk-30_c8030b4bef0609c2d17cd815cbd36b95">
-<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>threshold <span class="ot">&lt;-</span> <span class="sc">-</span> <span class="fu">log</span>(<span class="fl">1e-16</span>)</span>
-<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>mLL <span class="ot">&lt;-</span> <span class="cf">function</span>(mu, sigma, N0, data, <span class="at">epsilon =</span> <span class="fl">1e-16</span>) {</span>
-<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">min</span>(threshold,</span>
-<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a>      <span class="sc">-</span> <span class="fu">sum</span>(<span class="fu">dbinom</span>(data<span class="sc">$</span>positive,</span>
-<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a>                   data<span class="sc">$</span>total,</span>
-<span id="cb37-7"><a href="#cb37-7" aria-hidden="true" tabindex="-1"></a>                   <span class="fu">map_dbl</span>(data<span class="sc">$</span>duration,</span>
-<span id="cb37-8"><a href="#cb37-8" aria-hidden="true" tabindex="-1"></a>                           <span class="sc">~</span> <span class="fu">probability</span>(mu, sigma, N0, .x <span class="sc">*</span> <span class="dv">30</span>, epsilon)),</span>
-<span id="cb37-9"><a href="#cb37-9" aria-hidden="true" tabindex="-1"></a>                   <span class="cn">TRUE</span>)))</span>
-<span id="cb37-10"><a href="#cb37-10" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>threshold <span class="ot">&lt;-</span> <span class="sc">-</span> <span class="fu">log</span>(<span class="fl">1e-16</span>)</span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>mLL <span class="ot">&lt;-</span> <span class="cf">function</span>(mu, sigma, N0, data, <span class="at">epsilon =</span> <span class="fl">1e-16</span>) {</span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">min</span>(threshold,</span>
+<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a>      <span class="sc">-</span> <span class="fu">sum</span>(<span class="fu">dbinom</span>(data<span class="sc">$</span>positive,</span>
+<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a>                   data<span class="sc">$</span>total,</span>
+<span id="cb36-7"><a href="#cb36-7" aria-hidden="true" tabindex="-1"></a>                   <span class="fu">map_dbl</span>(data<span class="sc">$</span>duration,</span>
+<span id="cb36-8"><a href="#cb36-8" aria-hidden="true" tabindex="-1"></a>                           <span class="sc">~</span> <span class="fu">probability</span>(mu, sigma, N0, .x <span class="sc">*</span> <span class="dv">30</span>, epsilon)),</span>
+<span id="cb36-9"><a href="#cb36-9" aria-hidden="true" tabindex="-1"></a>                   <span class="cn">TRUE</span>)))</span>
+<span id="cb36-10"><a href="#cb36-10" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Let’s try it:</p>
 <div class="cell" data-layout-align="center" data-hash="analysis_cache/html/unnamed-chunk-31_8a41ec01aae9eaabc24f6dc6f884ba1a">
-<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mLL</span>(<span class="at">mu =</span> .<span class="dv">3</span>, <span class="at">sigma =</span> .<span class="dv">01</span>, <span class="at">N0 =</span> <span class="fl">1e4</span>, <span class="at">data =</span> <span class="fu">filter</span>(table2, group <span class="sc">==</span> <span class="st">"RIF"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mLL</span>(<span class="at">mu =</span> .<span class="dv">3</span>, <span class="at">sigma =</span> .<span class="dv">01</span>, <span class="at">N0 =</span> <span class="fl">1e4</span>, <span class="at">data =</span> <span class="fu">filter</span>(table2, group <span class="sc">==</span> <span class="st">"RIF"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 36.84136</code></pre>
 </div>
@@ -465,82 +468,84 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h3 data-number="6.2" class="anchored" data-anchor-id="likelihood-surfaces"><span class="header-section-number">6.2</span> Likelihood surfaces</h3>
 <p>Since we have only 2 parameters, we can easily have a look at the likelihood surface. A function that calculates the minus log-likelihood values:</p>
 <div class="cell" data-layout-align="center" data-hash="analysis_cache/html/calc_mLL_3d34d7646145025030748675d57ef9be">
-<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>calc_mLL <span class="ot">&lt;-</span> <span class="cf">function</span>(drug, mu_val, sigma_val, <span class="at">N0 =</span> <span class="fl">1e4</span>, <span class="at">epsilon =</span> <span class="fl">1e-16</span>) {</span>
-<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>  mLL_val <span class="ot">&lt;-</span> <span class="fu">expand.grid</span>(mu_val, sigma_val) <span class="sc">|&gt;</span></span>
-<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">with</span>(<span class="fu">map2_dbl</span>(Var1, Var2, mLL, <span class="at">N0 =</span> N0, <span class="at">data =</span> <span class="fu">filter</span>(table2, group <span class="sc">==</span> drug),</span>
-<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a>                  <span class="at">epsilon =</span> epsilon)) <span class="sc">|&gt;</span> </span>
-<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">matrix</span>(<span class="fu">length</span>(mu_val))</span>
-<span id="cb40-6"><a href="#cb40-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">list</span>(<span class="at">mu_val =</span> mu_val, <span class="at">sigma_val =</span> sigma_val, <span class="at">mLL_val =</span> mLL_val)</span>
-<span id="cb40-7"><a href="#cb40-7" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>calc_mLL <span class="ot">&lt;-</span> <span class="cf">function</span>(drug, mu_val, sigma_val, <span class="at">N0 =</span> <span class="fl">1e4</span>, <span class="at">epsilon =</span> <span class="fl">1e-16</span>) {</span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>  mLL_val <span class="ot">&lt;-</span> <span class="fu">expand.grid</span>(mu_val, sigma_val) <span class="sc">|&gt;</span></span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">with</span>(<span class="fu">map2_dbl</span>(Var1, Var2, mLL, <span class="at">N0 =</span> N0, <span class="at">data =</span> <span class="fu">filter</span>(table2, group <span class="sc">==</span> drug),</span>
+<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a>                  <span class="at">epsilon =</span> epsilon)) <span class="sc">|&gt;</span> </span>
+<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">matrix</span>(<span class="fu">length</span>(mu_val))</span>
+<span id="cb39-6"><a href="#cb39-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">list</span>(<span class="at">mu_val =</span> mu_val, <span class="at">sigma_val =</span> sigma_val, <span class="at">mLL_val =</span> mLL_val)</span>
+<span id="cb39-7"><a href="#cb39-7" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Calculating the minus log-likelihood values:</p>
 <div class="cell" data-layout-align="center" data-hash="analysis_cache/html/unnamed-chunk-32_215226a35125cd58f688e8636c36ff50">
-<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>mLL_INH <span class="ot">&lt;-</span> <span class="fu">calc_mLL</span>(<span class="st">"INH"</span>, <span class="fu">seq2</span>(.<span class="dv">001</span>, .<span class="dv">05</span>), <span class="fu">seq2</span>(.<span class="dv">0001</span>, .<span class="dv">012</span>))</span>
-<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>mLL_RIF <span class="ot">&lt;-</span> <span class="fu">calc_mLL</span>(<span class="st">"RIF"</span>, <span class="fu">seq2</span>(.<span class="dv">001</span>, .<span class="dv">2</span>), <span class="fu">seq2</span>(.<span class="dv">0001</span>, .<span class="dv">1</span>))</span>
-<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a>mLL_RIFINH <span class="ot">&lt;-</span> <span class="fu">calc_mLL</span>(<span class="st">"RIF+INH"</span>, <span class="fu">seq2</span>(.<span class="dv">05</span>, .<span class="dv">15</span>), <span class="fu">seq2</span>(.<span class="dv">0001</span>, .<span class="dv">15</span>))</span>
-<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a>mLL_RPTINH <span class="ot">&lt;-</span> <span class="fu">calc_mLL</span>(<span class="st">"RPT+INH"</span>, <span class="fu">seq2</span>(.<span class="dv">001</span>, .<span class="dv">5</span>), <span class="fu">seq2</span>(.<span class="dv">0001</span>, .<span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>mLL_INH <span class="ot">&lt;-</span> <span class="fu">calc_mLL</span>(<span class="st">"INH"</span>, <span class="fu">seq2</span>(.<span class="dv">001</span>, .<span class="dv">05</span>), <span class="fu">seq2</span>(.<span class="dv">0001</span>, .<span class="dv">012</span>))</span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>mLL_RIF <span class="ot">&lt;-</span> <span class="fu">calc_mLL</span>(<span class="st">"RIF"</span>, <span class="fu">seq2</span>(.<span class="dv">001</span>, .<span class="dv">2</span>), <span class="fu">seq2</span>(.<span class="dv">0001</span>, .<span class="dv">1</span>))</span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>mLL_RIFINH <span class="ot">&lt;-</span> <span class="fu">calc_mLL</span>(<span class="st">"RIF+INH"</span>, <span class="fu">seq2</span>(.<span class="dv">05</span>, .<span class="dv">15</span>), <span class="fu">seq2</span>(.<span class="dv">0001</span>, .<span class="dv">15</span>))</span>
+<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a>mLL_RPTINH <span class="ot">&lt;-</span> <span class="fu">calc_mLL</span>(<span class="st">"RPT+INH"</span>, <span class="fu">seq2</span>(.<span class="dv">001</span>, .<span class="dv">5</span>), <span class="fu">seq2</span>(.<span class="dv">0001</span>, .<span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>A function that draws the minus log-likelihood surfaces:</p>
 <div class="cell" data-layout-align="center" data-hash="analysis_cache/html/show_mLL_25c47ff3b9e4c36a9d4bb4ea7c907038">
-<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>show_mLL <span class="ot">&lt;-</span> <span class="cf">function</span>(x, ...) {</span>
-<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">with</span>(x, {</span>
-<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">image</span>(mu_val, sigma_val, mLL_val,</span>
-<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a>          <span class="at">xlab =</span> <span class="fu">expression</span>(<span class="fu">paste</span>(<span class="st">"within-host mean decay rate "</span>, mu, <span class="st">" (/day)"</span>)),</span>
-<span id="cb42-5"><a href="#cb42-5" aria-hidden="true" tabindex="-1"></a>          <span class="at">ylab =</span> <span class="fu">expression</span>(<span class="fu">paste</span>(<span class="st">"individual variability "</span>, sigma, <span class="st">" (/day)"</span>)))</span>
-<span id="cb42-6"><a href="#cb42-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">contour</span>(mu_val, sigma_val, mLL_val, <span class="at">add =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb42-7"><a href="#cb42-7" aria-hidden="true" tabindex="-1"></a>            <span class="at">levels =</span> <span class="fu">c</span>(.<span class="dv">002</span>, .<span class="dv">01</span>, .<span class="dv">1</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>), ...)</span>
-<span id="cb42-8"><a href="#cb42-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">box</span>(<span class="at">bty =</span> <span class="st">"o"</span>)</span>
-<span id="cb42-9"><a href="#cb42-9" aria-hidden="true" tabindex="-1"></a>  })</span>
-<span id="cb42-10"><a href="#cb42-10" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>show_mLL <span class="ot">&lt;-</span> <span class="cf">function</span>(x, ...) {</span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">with</span>(x, {</span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">image</span>(mu_val, sigma_val, mLL_val,</span>
+<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a>          <span class="at">xlab =</span> <span class="fu">expression</span>(<span class="fu">paste</span>(<span class="st">"within-host mean decay rate "</span>, mu, <span class="st">" (/day)"</span>)),</span>
+<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a>          <span class="at">ylab =</span> <span class="fu">expression</span>(<span class="fu">paste</span>(<span class="st">"individual variability "</span>, sigma, <span class="st">" (/day)"</span>)))</span>
+<span id="cb41-6"><a href="#cb41-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">contour</span>(mu_val, sigma_val, mLL_val, <span class="at">add =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb41-7"><a href="#cb41-7" aria-hidden="true" tabindex="-1"></a>            <span class="at">levels =</span> <span class="fu">c</span>(.<span class="dv">002</span>, .<span class="dv">01</span>, .<span class="dv">1</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>), ...)</span>
+<span id="cb41-8"><a href="#cb41-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">box</span>(<span class="at">bty =</span> <span class="st">"o"</span>)</span>
+<span id="cb41-9"><a href="#cb41-9" aria-hidden="true" tabindex="-1"></a>  })</span>
+<span id="cb41-10"><a href="#cb41-10" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Let’s try it:</p>
-<div class="cell" data-layout-align="center" data-hash="analysis_cache/html/unnamed-chunk-33_3b6e1b767c3df374c96c24c0e3aa663e">
-<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>opar <span class="ot">&lt;-</span> <span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">2</span>), <span class="at">cex =</span> <span class="dv">1</span>, <span class="at">plt =</span> <span class="fu">c</span>(.<span class="dv">17</span>, .<span class="dv">93</span>, .<span class="dv">2</span>, .<span class="dv">87</span>))</span>
-<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a><span class="fu">walk2</span>(<span class="fu">list</span>(mLL_INH, mLL_RIF, mLL_RIFINH, mLL_RPTINH),</span>
-<span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a>      <span class="fu">c</span>(<span class="st">"INH"</span>, <span class="st">"RIF"</span>, <span class="st">"RIF+INH"</span>, <span class="st">"RPT+INH"</span>),</span>
-<span id="cb43-5"><a href="#cb43-5" aria-hidden="true" tabindex="-1"></a>      <span class="sc">~</span> {<span class="fu">show_mLL</span>(.x); <span class="fu">title2</span>(.y)})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-layout-align="center" data-hash="analysis_cache/html/fig-likelihood-surface_ef0aa9cb709ea15d32d0abd9a4dd1440">
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>opar <span class="ot">&lt;-</span> <span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">2</span>), <span class="at">cex =</span> <span class="dv">1</span>, <span class="at">plt =</span> <span class="fu">c</span>(.<span class="dv">17</span>, .<span class="dv">93</span>, .<span class="dv">2</span>, .<span class="dv">87</span>))</span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a><span class="fu">walk2</span>(<span class="fu">list</span>(mLL_INH, mLL_RIF, mLL_RIFINH, mLL_RPTINH),</span>
+<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a>      <span class="fu">c</span>(<span class="st">"INH"</span>, <span class="st">"RIF"</span>, <span class="st">"RIF+INH"</span>, <span class="st">"RPT+INH"</span>),</span>
+<span id="cb42-5"><a href="#cb42-5" aria-hidden="true" tabindex="-1"></a>      <span class="sc">~</span> {<span class="fu">show_mLL</span>(.x); <span class="fu">title2</span>(.y)})</span>
+<span id="cb42-6"><a href="#cb42-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-7"><a href="#cb42-7" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(opar)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
+<div id="fig-likelihood-surface" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure">
-<p><img src="analysis_files/figure-html/unnamed-chunk-33-1.png" class="img-fluid figure-img" width="720"></p>
+<p><img src="analysis_files/figure-html/fig-likelihood-surface-1.png" class="img-fluid figure-img" width="720"></p>
+<figcaption class="figure-caption">Figure&nbsp;3: likelihood surface of the model with the data from the 4 treatments of Table 2 of <a href="https://doi.org/10.1164/rccm.201103-0397oc">10.1164/rccm.201103-0397OC</a>.</figcaption>
 </figure>
 </div>
 </div>
-<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(opar)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="mle-by-bfgs" class="level3" data-number="6.3">
 <h3 data-number="6.3" class="anchored" data-anchor-id="mle-by-bfgs"><span class="header-section-number">6.3</span> MLE by BFGS</h3>
 <p>A function that performs estimations using the BFGS quasi-Newton algorithm:</p>
 <div class="cell" data-layout-align="center" data-hash="analysis_cache/html/unnamed-chunk-34_a613c2866881a8d3961326c4e08dad09">
-<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>estimations <span class="ot">&lt;-</span> <span class="cf">function</span>(mu, sigma, lower, upper, drug, <span class="at">N0 =</span> <span class="fl">1e4</span>, <span class="at">epsilon =</span> <span class="fl">1e-16</span>) {</span>
-<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>  data <span class="ot">&lt;-</span> <span class="fu">filter</span>(table2, group <span class="sc">==</span> drug)</span>
-<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mle2</span>(<span class="cf">function</span>(mu, sigma) <span class="fu">mLL</span>(mu, sigma, N0, data, epsilon),</span>
-<span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a>       <span class="fu">list</span>(<span class="at">mu =</span> mu, <span class="at">sigma =</span> sigma), <span class="st">"L-BFGS-B"</span>,</span>
-<span id="cb45-5"><a href="#cb45-5" aria-hidden="true" tabindex="-1"></a>       <span class="at">lower =</span> lower, <span class="at">upper =</span> upper)</span>
-<span id="cb45-6"><a href="#cb45-6" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>estimations <span class="ot">&lt;-</span> <span class="cf">function</span>(mu, sigma, lower, upper, drug, <span class="at">N0 =</span> <span class="fl">1e4</span>, <span class="at">epsilon =</span> <span class="fl">1e-16</span>) {</span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>  data <span class="ot">&lt;-</span> <span class="fu">filter</span>(table2, group <span class="sc">==</span> drug)</span>
+<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mle2</span>(<span class="cf">function</span>(mu, sigma) <span class="fu">mLL</span>(mu, sigma, N0, data, epsilon),</span>
+<span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a>       <span class="fu">list</span>(<span class="at">mu =</span> mu, <span class="at">sigma =</span> sigma), <span class="st">"L-BFGS-B"</span>,</span>
+<span id="cb43-5"><a href="#cb43-5" aria-hidden="true" tabindex="-1"></a>       <span class="at">lower =</span> lower, <span class="at">upper =</span> upper)</span>
+<span id="cb43-6"><a href="#cb43-6" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Let’s use it:</p>
 <div class="cell" data-layout-align="center" data-hash="analysis_cache/html/unnamed-chunk-35_c8225d0a8143451a6291a6a1c7f54165">
-<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>est_RIF    <span class="ot">&lt;-</span> <span class="fu">estimations</span>(<span class="at">mu    =</span> .<span class="dv">08</span>, <span class="at">sigma =</span> .<span class="dv">02</span>,</span>
-<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>                          <span class="at">lower =</span> <span class="fu">c</span>(<span class="at">mu =</span> .<span class="dv">06</span>, <span class="at">sigma =</span> .<span class="dv">01</span>),</span>
-<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a>                          <span class="at">upper =</span> <span class="fu">c</span>(<span class="at">mu =</span> .<span class="dv">09</span>, <span class="at">sigma =</span> .<span class="dv">05</span>),</span>
-<span id="cb46-4"><a href="#cb46-4" aria-hidden="true" tabindex="-1"></a>                          <span class="at">drug  =</span> <span class="st">"RIF"</span>)</span>
-<span id="cb46-5"><a href="#cb46-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-6"><a href="#cb46-6" aria-hidden="true" tabindex="-1"></a>est_RIFINH <span class="ot">&lt;-</span> <span class="fu">estimations</span>(<span class="at">mu    =</span> .<span class="dv">11</span>, <span class="at">sigma =</span> .<span class="dv">04</span>,</span>
-<span id="cb46-7"><a href="#cb46-7" aria-hidden="true" tabindex="-1"></a>                          <span class="at">lower =</span> <span class="fu">c</span>(<span class="at">mu =</span> .<span class="dv">09</span>, <span class="at">sigma =</span> .<span class="dv">02</span>),</span>
-<span id="cb46-8"><a href="#cb46-8" aria-hidden="true" tabindex="-1"></a>                          <span class="at">upper =</span> <span class="fu">c</span>(<span class="at">mu =</span> .<span class="dv">11</span>, <span class="at">sigma =</span> .<span class="dv">05</span>),</span>
-<span id="cb46-9"><a href="#cb46-9" aria-hidden="true" tabindex="-1"></a>                          <span class="at">drug  =</span> <span class="st">"RIF+INH"</span>)</span>
-<span id="cb46-10"><a href="#cb46-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-11"><a href="#cb46-11" aria-hidden="true" tabindex="-1"></a>est_RPTINH <span class="ot">&lt;-</span> <span class="fu">estimations</span>(<span class="at">mu    =</span> .<span class="dv">3</span>, <span class="at">sigma =</span> .<span class="dv">04</span>,</span>
-<span id="cb46-12"><a href="#cb46-12" aria-hidden="true" tabindex="-1"></a>                          <span class="at">lower =</span> <span class="fu">c</span>(<span class="at">mu =</span> .<span class="dv">28</span>, <span class="at">sigma =</span> .<span class="dv">01</span>),</span>
-<span id="cb46-13"><a href="#cb46-13" aria-hidden="true" tabindex="-1"></a>                          <span class="at">upper =</span> <span class="fu">c</span>(<span class="at">mu =</span> .<span class="dv">32</span>, <span class="at">sigma =</span> .<span class="dv">08</span>),</span>
-<span id="cb46-14"><a href="#cb46-14" aria-hidden="true" tabindex="-1"></a>                          <span class="at">drug  =</span> <span class="st">"RPT+INH"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>est_RIF    <span class="ot">&lt;-</span> <span class="fu">estimations</span>(<span class="at">mu    =</span> .<span class="dv">08</span>, <span class="at">sigma =</span> .<span class="dv">02</span>,</span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>                          <span class="at">lower =</span> <span class="fu">c</span>(<span class="at">mu =</span> .<span class="dv">06</span>, <span class="at">sigma =</span> .<span class="dv">01</span>),</span>
+<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a>                          <span class="at">upper =</span> <span class="fu">c</span>(<span class="at">mu =</span> .<span class="dv">09</span>, <span class="at">sigma =</span> .<span class="dv">05</span>),</span>
+<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a>                          <span class="at">drug  =</span> <span class="st">"RIF"</span>)</span>
+<span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-6"><a href="#cb44-6" aria-hidden="true" tabindex="-1"></a>est_RIFINH <span class="ot">&lt;-</span> <span class="fu">estimations</span>(<span class="at">mu    =</span> .<span class="dv">11</span>, <span class="at">sigma =</span> .<span class="dv">04</span>,</span>
+<span id="cb44-7"><a href="#cb44-7" aria-hidden="true" tabindex="-1"></a>                          <span class="at">lower =</span> <span class="fu">c</span>(<span class="at">mu =</span> .<span class="dv">09</span>, <span class="at">sigma =</span> .<span class="dv">02</span>),</span>
+<span id="cb44-8"><a href="#cb44-8" aria-hidden="true" tabindex="-1"></a>                          <span class="at">upper =</span> <span class="fu">c</span>(<span class="at">mu =</span> .<span class="dv">11</span>, <span class="at">sigma =</span> .<span class="dv">05</span>),</span>
+<span id="cb44-9"><a href="#cb44-9" aria-hidden="true" tabindex="-1"></a>                          <span class="at">drug  =</span> <span class="st">"RIF+INH"</span>)</span>
+<span id="cb44-10"><a href="#cb44-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-11"><a href="#cb44-11" aria-hidden="true" tabindex="-1"></a>est_RPTINH <span class="ot">&lt;-</span> <span class="fu">estimations</span>(<span class="at">mu    =</span> .<span class="dv">3</span>, <span class="at">sigma =</span> .<span class="dv">04</span>,</span>
+<span id="cb44-12"><a href="#cb44-12" aria-hidden="true" tabindex="-1"></a>                          <span class="at">lower =</span> <span class="fu">c</span>(<span class="at">mu =</span> .<span class="dv">28</span>, <span class="at">sigma =</span> .<span class="dv">01</span>),</span>
+<span id="cb44-13"><a href="#cb44-13" aria-hidden="true" tabindex="-1"></a>                          <span class="at">upper =</span> <span class="fu">c</span>(<span class="at">mu =</span> .<span class="dv">32</span>, <span class="at">sigma =</span> .<span class="dv">08</span>),</span>
+<span id="cb44-14"><a href="#cb44-14" aria-hidden="true" tabindex="-1"></a>                          <span class="at">drug  =</span> <span class="st">"RPT+INH"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Which gives:</p>
 <div class="cell" data-layout-align="center" data-hash="analysis_cache/html/unnamed-chunk-36_6c4d311517e6ab3aa44b2eda3781806b">
-<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="fu">map_dfr</span>(<span class="fu">list2</span>(est_RIF, est_RIFINH, est_RPTINH), coef, <span class="at">.id =</span> <span class="st">"group"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="fu">map_dfr</span>(<span class="fu">list2</span>(est_RIF, est_RIFINH, est_RPTINH), coef, <span class="at">.id =</span> <span class="st">"group"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 3 × 3
   group          mu  sigma
@@ -554,95 +559,98 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="model-predictions" class="level3" data-number="6.4">
 <h3 data-number="6.4" class="anchored" data-anchor-id="model-predictions"><span class="header-section-number">6.4</span> Model predictions</h3>
 <p>The following figure shows the estimated inter-individual variability of the exponential decay rate:</p>
-<div class="cell" data-layout-align="center" data-hash="analysis_cache/html/unnamed-chunk-37_a5a0f9941297f70fb70d9f574a5736ff">
-<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a>nb_pts <span class="ot">&lt;-</span> <span class="dv">512</span></span>
-<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a>x_max <span class="ot">&lt;-</span> .<span class="dv">45</span></span>
-<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a>x_val <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">0</span>, x_max, <span class="at">le =</span> nb_pts)</span>
-<span id="cb49-4"><a href="#cb49-4" aria-hidden="true" tabindex="-1"></a>y2 <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">0</span>, nb_pts)</span>
-<span id="cb49-5"><a href="#cb49-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb49-6"><a href="#cb49-6" aria-hidden="true" tabindex="-1"></a>add_area <span class="ot">&lt;-</span> <span class="cf">function</span>(x, col) {</span>
-<span id="cb49-7"><a href="#cb49-7" aria-hidden="true" tabindex="-1"></a>  y1 <span class="ot">&lt;-</span> <span class="fu">dgamma2</span>(x_val, x[<span class="st">"mu"</span>], x[<span class="st">"sigma"</span>])</span>
-<span id="cb49-8"><a href="#cb49-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">polygon2</span>(x_val, y1, y2, <span class="at">col =</span> col)</span>
-<span id="cb49-9"><a href="#cb49-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">lines2</span>(x_val, y1, <span class="at">col =</span> col)</span>
-<span id="cb49-10"><a href="#cb49-10" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb49-11"><a href="#cb49-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb49-12"><a href="#cb49-12" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="cn">NA</span>, <span class="at">xlim =</span> <span class="fu">c</span>(<span class="dv">0</span>, x_max), <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">25</span>),</span>
-<span id="cb49-13"><a href="#cb49-13" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="fu">expression</span>(<span class="fu">paste</span>(<span class="st">"decay rate "</span>, lambda, <span class="st">" (/day)"</span>)),</span>
-<span id="cb49-14"><a href="#cb49-14" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylab =</span> <span class="st">"density of probability"</span>)</span>
-<span id="cb49-15"><a href="#cb49-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb49-16"><a href="#cb49-16" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(est_RIF, est_RIFINH, est_RPTINH) <span class="sc">|&gt;</span> </span>
-<span id="cb49-17"><a href="#cb49-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">map</span>(coef) <span class="sc">|&gt;</span> </span>
-<span id="cb49-18"><a href="#cb49-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">walk2</span>(col_treatments[<span class="sc">-</span><span class="dv">1</span>], add_area)</span>
-<span id="cb49-19"><a href="#cb49-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb49-20"><a href="#cb49-20" aria-hidden="true" tabindex="-1"></a><span class="fu">legend2</span>(<span class="st">"topright"</span>, <span class="at">legend =</span> treatments[<span class="sc">-</span><span class="dv">1</span>], <span class="at">col =</span> col_treatments[<span class="sc">-</span><span class="dv">1</span>], <span class="at">lwd =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-layout-align="center" data-hash="analysis_cache/html/fig-inferred-distribution-decay-rate_842ce8624e4e9cef9a1cf5d1ed09fb25">
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>nb_pts <span class="ot">&lt;-</span> <span class="dv">512</span></span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a>x_max <span class="ot">&lt;-</span> .<span class="dv">45</span></span>
+<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a>x_val <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">0</span>, x_max, <span class="at">le =</span> nb_pts)</span>
+<span id="cb47-4"><a href="#cb47-4" aria-hidden="true" tabindex="-1"></a>y2 <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">0</span>, nb_pts)</span>
+<span id="cb47-5"><a href="#cb47-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-6"><a href="#cb47-6" aria-hidden="true" tabindex="-1"></a>add_area <span class="ot">&lt;-</span> <span class="cf">function</span>(x, col) {</span>
+<span id="cb47-7"><a href="#cb47-7" aria-hidden="true" tabindex="-1"></a>  y1 <span class="ot">&lt;-</span> <span class="fu">dgamma2</span>(x_val, x[<span class="st">"mu"</span>], x[<span class="st">"sigma"</span>])</span>
+<span id="cb47-8"><a href="#cb47-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">polygon2</span>(x_val, y1, y2, <span class="at">col =</span> col)</span>
+<span id="cb47-9"><a href="#cb47-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">lines2</span>(x_val, y1, <span class="at">col =</span> col)</span>
+<span id="cb47-10"><a href="#cb47-10" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb47-11"><a href="#cb47-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-12"><a href="#cb47-12" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="cn">NA</span>, <span class="at">xlim =</span> <span class="fu">c</span>(<span class="dv">0</span>, x_max), <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">25</span>),</span>
+<span id="cb47-13"><a href="#cb47-13" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="fu">expression</span>(<span class="fu">paste</span>(<span class="st">"decay rate "</span>, lambda, <span class="st">" (/day)"</span>)),</span>
+<span id="cb47-14"><a href="#cb47-14" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylab =</span> <span class="st">"density of probability"</span>)</span>
+<span id="cb47-15"><a href="#cb47-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-16"><a href="#cb47-16" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(est_RIF, est_RIFINH, est_RPTINH) <span class="sc">|&gt;</span> </span>
+<span id="cb47-17"><a href="#cb47-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">map</span>(coef) <span class="sc">|&gt;</span> </span>
+<span id="cb47-18"><a href="#cb47-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">walk2</span>(col_treatments[<span class="sc">-</span><span class="dv">1</span>], add_area)</span>
+<span id="cb47-19"><a href="#cb47-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-20"><a href="#cb47-20" aria-hidden="true" tabindex="-1"></a><span class="fu">legend2</span>(<span class="st">"topright"</span>, <span class="at">legend =</span> treatments[<span class="sc">-</span><span class="dv">1</span>], <span class="at">col =</span> col_treatments[<span class="sc">-</span><span class="dv">1</span>], <span class="at">lwd =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
+<div id="fig-inferred-distribution-decay-rate" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure">
-<p><img src="analysis_files/figure-html/unnamed-chunk-37-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="analysis_files/figure-html/fig-inferred-distribution-decay-rate-1.png" class="img-fluid figure-img" width="672"></p>
+<figcaption class="figure-caption">Figure&nbsp;4: inferred distributions of the rate of CFU decay for 3 treatments of Table 2 of <a href="https://doi.org/10.1164/rccm.201103-0397oc">10.1164/rccm.201103-0397OC</a>.</figcaption>
 </figure>
 </div>
 </div>
 </div>
 <p>A function that adds model predictions to a plot:</p>
 <div class="cell" data-layout-align="center" data-hash="analysis_cache/html/add_pred_721adf655f528ab0d50ea2de02ab017e">
-<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>add_pred <span class="ot">&lt;-</span> <span class="cf">function</span>(x, col, t_max, <span class="at">cfu0 =</span> <span class="fl">1e4</span>, <span class="at">alpha =</span> .<span class="dv">2</span>, <span class="at">aggregation =</span> <span class="dv">7</span>) {</span>
-<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a>  t_val <span class="ot">&lt;-</span> <span class="fu">seq3</span>(<span class="dv">0</span>, t_max)</span>
-<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a>  t_val2 <span class="ot">&lt;-</span> t_val <span class="sc">/</span> aggregation</span>
-<span id="cb50-4"><a href="#cb50-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">polygon2</span>(t_val2,</span>
-<span id="cb50-5"><a href="#cb50-5" aria-hidden="true" tabindex="-1"></a>           <span class="fu">cfu</span>(cfu0, <span class="fu">qgamma2</span>(.<span class="dv">025</span>, x[<span class="st">"mu"</span>], x[<span class="st">"sigma"</span>]), t_val),</span>
-<span id="cb50-6"><a href="#cb50-6" aria-hidden="true" tabindex="-1"></a>           <span class="fu">cfu</span>(cfu0, <span class="fu">qgamma2</span>(.<span class="dv">975</span>, x[<span class="st">"mu"</span>], x[<span class="st">"sigma"</span>]), t_val), <span class="at">col =</span> col)</span>
-<span id="cb50-7"><a href="#cb50-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">lines2</span>(t_val2, <span class="fu">cfu</span>(cfu0, <span class="fu">qgamma2</span>(.<span class="dv">500</span>, x[<span class="st">"mu"</span>], x[<span class="st">"sigma"</span>]), t_val), <span class="at">col =</span> col)</span>
-<span id="cb50-8"><a href="#cb50-8" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>add_pred <span class="ot">&lt;-</span> <span class="cf">function</span>(x, col, t_max, <span class="at">cfu0 =</span> <span class="fl">1e4</span>, <span class="at">alpha =</span> .<span class="dv">2</span>, <span class="at">aggregation =</span> <span class="dv">7</span>) {</span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a>  t_val <span class="ot">&lt;-</span> <span class="fu">seq3</span>(<span class="dv">0</span>, t_max)</span>
+<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a>  t_val2 <span class="ot">&lt;-</span> t_val <span class="sc">/</span> aggregation</span>
+<span id="cb48-4"><a href="#cb48-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">polygon2</span>(t_val2,</span>
+<span id="cb48-5"><a href="#cb48-5" aria-hidden="true" tabindex="-1"></a>           <span class="fu">cfu</span>(cfu0, <span class="fu">qgamma2</span>(.<span class="dv">025</span>, x[<span class="st">"mu"</span>], x[<span class="st">"sigma"</span>]), t_val),</span>
+<span id="cb48-6"><a href="#cb48-6" aria-hidden="true" tabindex="-1"></a>           <span class="fu">cfu</span>(cfu0, <span class="fu">qgamma2</span>(.<span class="dv">975</span>, x[<span class="st">"mu"</span>], x[<span class="st">"sigma"</span>]), t_val), <span class="at">col =</span> col)</span>
+<span id="cb48-7"><a href="#cb48-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">lines2</span>(t_val2, <span class="fu">cfu</span>(cfu0, <span class="fu">qgamma2</span>(.<span class="dv">500</span>, x[<span class="st">"mu"</span>], x[<span class="st">"sigma"</span>]), t_val), <span class="at">col =</span> col)</span>
+<span id="cb48-8"><a href="#cb48-8" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>The following function shows the model-predicted expected proportions of positive individuals in the population:</p>
 <div class="cell" data-layout-align="center" data-hash="analysis_cache/html/predicted_cfu_89d0d43821236a8fe1699e96e7978081">
-<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a>predicted_cfu <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">t_max =</span> <span class="dv">6</span> <span class="sc">*</span> <span class="dv">30</span>, <span class="at">agg =</span> <span class="dv">7</span>, <span class="at">log =</span> <span class="cn">FALSE</span>, <span class="at">cfu0 =</span> <span class="fl">1e4</span>, ...) {</span>
-<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot_frame</span>(<span class="at">t_max =</span> t_max, <span class="at">agg =</span> agg, <span class="at">log =</span> log, ...)</span>
-<span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">list</span>(est_RIF, est_RIFINH, est_RPTINH) <span class="sc">|&gt;</span> </span>
-<span id="cb51-4"><a href="#cb51-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">map</span>(coef) <span class="sc">|&gt;</span> </span>
-<span id="cb51-5"><a href="#cb51-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">walk2</span>(col_treatments[<span class="sc">-</span><span class="dv">1</span>], add_pred, t_max, cfu0, <span class="at">aggregation =</span> agg)</span>
-<span id="cb51-6"><a href="#cb51-6" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a>predicted_cfu <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">t_max =</span> <span class="dv">6</span> <span class="sc">*</span> <span class="dv">30</span>, <span class="at">agg =</span> <span class="dv">7</span>, <span class="at">log =</span> <span class="cn">FALSE</span>, <span class="at">cfu0 =</span> <span class="fl">1e4</span>, ...) {</span>
+<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot_frame</span>(<span class="at">t_max =</span> t_max, <span class="at">agg =</span> agg, <span class="at">log =</span> log, ...)</span>
+<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">list</span>(est_RIF, est_RIFINH, est_RPTINH) <span class="sc">|&gt;</span> </span>
+<span id="cb49-4"><a href="#cb49-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">map</span>(coef) <span class="sc">|&gt;</span> </span>
+<span id="cb49-5"><a href="#cb49-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">walk2</span>(col_treatments[<span class="sc">-</span><span class="dv">1</span>], add_pred, t_max, cfu0, <span class="at">aggregation =</span> agg)</span>
+<span id="cb49-6"><a href="#cb49-6" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Let’s try it:</p>
-<div class="cell" data-layout-align="center" data-hash="analysis_cache/html/unnamed-chunk-38_904a9e4f3cd3c966f3cff1fc3d494bf2">
-<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a>opar <span class="ot">&lt;-</span> <span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">3</span>), <span class="at">cex =</span> <span class="dv">1</span>, <span class="at">plt =</span> <span class="fu">c</span>(.<span class="dv">2</span>, .<span class="dv">95</span>, .<span class="dv">1983</span>, .<span class="dv">8947</span>))</span>
-<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a><span class="fu">predicted_cfu</span>(<span class="at">xlab =</span> <span class="st">"time (weeks)"</span>)</span>
-<span id="cb52-3"><a href="#cb52-3" aria-hidden="true" tabindex="-1"></a><span class="fu">add_legend</span>()</span>
-<span id="cb52-4"><a href="#cb52-4" aria-hidden="true" tabindex="-1"></a><span class="fu">predicted_cfu</span>(<span class="dv">30</span>, <span class="dv">1</span>, <span class="at">xlab =</span> <span class="st">"time (days)"</span>)</span>
-<span id="cb52-5"><a href="#cb52-5" aria-hidden="true" tabindex="-1"></a><span class="fu">predicted_cfu</span>(<span class="at">xlab =</span> <span class="st">"time (weeks)"</span>, <span class="at">log =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-layout-align="center" data-hash="analysis_cache/html/fig-predicted-cfu-decay_db24927ff2060d1437b55aa9269d9523">
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>opar <span class="ot">&lt;-</span> <span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">3</span>), <span class="at">cex =</span> <span class="dv">1</span>, <span class="at">plt =</span> <span class="fu">c</span>(.<span class="dv">2</span>, .<span class="dv">95</span>, .<span class="dv">1983</span>, .<span class="dv">8947</span>))</span>
+<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a><span class="fu">predicted_cfu</span>(<span class="at">xlab =</span> <span class="st">"time (weeks)"</span>)</span>
+<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a><span class="fu">add_legend</span>()</span>
+<span id="cb50-4"><a href="#cb50-4" aria-hidden="true" tabindex="-1"></a><span class="fu">predicted_cfu</span>(<span class="dv">30</span>, <span class="dv">1</span>, <span class="at">xlab =</span> <span class="st">"time (days)"</span>)</span>
+<span id="cb50-5"><a href="#cb50-5" aria-hidden="true" tabindex="-1"></a><span class="fu">predicted_cfu</span>(<span class="at">xlab =</span> <span class="st">"time (weeks)"</span>, <span class="at">log =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb50-6"><a href="#cb50-6" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(opar)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
+<div id="fig-predicted-cfu-decay" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure">
-<p><img src="analysis_files/figure-html/unnamed-chunk-38-1.png" class="img-fluid figure-img" width="816"></p>
+<p><img src="analysis_files/figure-html/fig-predicted-cfu-decay-1.png" class="img-fluid figure-img" width="816"></p>
+<figcaption class="figure-caption">Figure&nbsp;5: model-predicted decay of CFU from the experimental data of Table 2 of <a href="https://doi.org/10.1164/rccm.201103-0397oc">10.1164/rccm.201103-0397OC</a>.</figcaption>
 </figure>
 </div>
 </div>
-<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(opar)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>A function that adds model-predicted proportions of individual with CFU &gt; 1 in a population of 15 individuals:</p>
 <div class="cell" data-layout-align="center" data-hash="analysis_cache/html/unnamed-chunk-39_4c910e17d11bf0a7c6cd5c9ec43174b0">
-<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a>add_mod_pred <span class="ot">&lt;-</span> <span class="cf">function</span>(x, col, <span class="at">alpha =</span> .<span class="dv">2</span>) {</span>
-<span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a>  t_val <span class="ot">&lt;-</span> <span class="fu">seq3</span>(<span class="dv">0</span>, <span class="dv">6</span> <span class="sc">*</span> <span class="dv">30</span>)</span>
-<span id="cb54-3"><a href="#cb54-3" aria-hidden="true" tabindex="-1"></a>  p_val <span class="ot">&lt;-</span> <span class="fu">map_dbl</span>(t_val, <span class="sc">~</span> <span class="fu">probability</span>(x[<span class="st">"mu"</span>], x[<span class="st">"sigma"</span>],</span>
-<span id="cb54-4"><a href="#cb54-4" aria-hidden="true" tabindex="-1"></a>                                        <span class="at">N0 =</span> <span class="fl">1e4</span>, <span class="at">t =</span> .x, <span class="at">epsilon =</span> <span class="fl">1e-16</span>))</span>
-<span id="cb54-5"><a href="#cb54-5" aria-hidden="true" tabindex="-1"></a>  t_val <span class="ot">&lt;-</span> t_val <span class="sc">/</span> <span class="dv">30</span></span>
-<span id="cb54-6"><a href="#cb54-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">polygon2</span>(t_val,</span>
-<span id="cb54-7"><a href="#cb54-7" aria-hidden="true" tabindex="-1"></a>           <span class="fu">qbinom</span>(.<span class="dv">025</span>, <span class="dv">15</span>, p_val) <span class="sc">/</span> <span class="dv">15</span>,</span>
-<span id="cb54-8"><a href="#cb54-8" aria-hidden="true" tabindex="-1"></a>           <span class="fu">qbinom</span>(.<span class="dv">975</span>, <span class="dv">15</span>, p_val) <span class="sc">/</span> <span class="dv">15</span>, <span class="at">col =</span> col)</span>
-<span id="cb54-9"><a href="#cb54-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">lines2</span>(t_val, <span class="fu">qbinom</span>(.<span class="dv">5</span>, <span class="dv">15</span>, p_val) <span class="sc">/</span> <span class="dv">15</span>, <span class="at">col =</span> col)</span>
-<span id="cb54-10"><a href="#cb54-10" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a>add_mod_pred <span class="ot">&lt;-</span> <span class="cf">function</span>(x, col, <span class="at">alpha =</span> .<span class="dv">2</span>) {</span>
+<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a>  t_val <span class="ot">&lt;-</span> <span class="fu">seq3</span>(<span class="dv">0</span>, <span class="dv">6</span> <span class="sc">*</span> <span class="dv">30</span>)</span>
+<span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a>  p_val <span class="ot">&lt;-</span> <span class="fu">map_dbl</span>(t_val, <span class="sc">~</span> <span class="fu">probability</span>(x[<span class="st">"mu"</span>], x[<span class="st">"sigma"</span>],</span>
+<span id="cb51-4"><a href="#cb51-4" aria-hidden="true" tabindex="-1"></a>                                        <span class="at">N0 =</span> <span class="fl">1e4</span>, <span class="at">t =</span> .x, <span class="at">epsilon =</span> <span class="fl">1e-16</span>))</span>
+<span id="cb51-5"><a href="#cb51-5" aria-hidden="true" tabindex="-1"></a>  t_val <span class="ot">&lt;-</span> t_val <span class="sc">/</span> <span class="dv">30</span></span>
+<span id="cb51-6"><a href="#cb51-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">polygon2</span>(t_val,</span>
+<span id="cb51-7"><a href="#cb51-7" aria-hidden="true" tabindex="-1"></a>           <span class="fu">qbinom</span>(.<span class="dv">025</span>, <span class="dv">15</span>, p_val) <span class="sc">/</span> <span class="dv">15</span>,</span>
+<span id="cb51-8"><a href="#cb51-8" aria-hidden="true" tabindex="-1"></a>           <span class="fu">qbinom</span>(.<span class="dv">975</span>, <span class="dv">15</span>, p_val) <span class="sc">/</span> <span class="dv">15</span>, <span class="at">col =</span> col)</span>
+<span id="cb51-9"><a href="#cb51-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">lines2</span>(t_val, <span class="fu">qbinom</span>(.<span class="dv">5</span>, <span class="dv">15</span>, p_val) <span class="sc">/</span> <span class="dv">15</span>, <span class="at">col =</span> col)</span>
+<span id="cb51-10"><a href="#cb51-10" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Proportion of individuals with CFU &gt; 1 as a function of time in a population of 15 individuals:</p>
-<div class="cell" data-layout-align="center" data-hash="analysis_cache/html/unnamed-chunk-40_a041229095d92f8569f03fe3be99c874">
-<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_data_prop_est</span>(<span class="cn">FALSE</span>, <span class="cn">FALSE</span>)</span>
-<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a><span class="fu">add_mod_pred</span>(<span class="fu">coef</span>(est_RIF), col_treatments[<span class="dv">2</span>])</span>
-<span id="cb55-3"><a href="#cb55-3" aria-hidden="true" tabindex="-1"></a><span class="fu">add_mod_pred</span>(<span class="fu">coef</span>(est_RIFINH), col_treatments[<span class="dv">3</span>])</span>
-<span id="cb55-4"><a href="#cb55-4" aria-hidden="true" tabindex="-1"></a><span class="fu">add_mod_pred</span>(<span class="fu">coef</span>(est_RPTINH), col_treatments[<span class="dv">4</span>])</span>
-<span id="cb55-5"><a href="#cb55-5" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">"topright"</span>, <span class="at">legend =</span> treatments, <span class="at">col =</span> col_treatments, <span class="at">lwd =</span> line_width)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-layout-align="center" data-hash="analysis_cache/html/fig-data-model-prediction_d0f51e2d67a3f41192d18b7e3f0d1168">
+<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_data_prop_est</span>(<span class="cn">FALSE</span>, <span class="cn">FALSE</span>)</span>
+<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a><span class="fu">add_mod_pred</span>(<span class="fu">coef</span>(est_RIF), col_treatments[<span class="dv">2</span>])</span>
+<span id="cb52-3"><a href="#cb52-3" aria-hidden="true" tabindex="-1"></a><span class="fu">add_mod_pred</span>(<span class="fu">coef</span>(est_RIFINH), col_treatments[<span class="dv">3</span>])</span>
+<span id="cb52-4"><a href="#cb52-4" aria-hidden="true" tabindex="-1"></a><span class="fu">add_mod_pred</span>(<span class="fu">coef</span>(est_RPTINH), col_treatments[<span class="dv">4</span>])</span>
+<span id="cb52-5"><a href="#cb52-5" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">"topright"</span>, <span class="at">legend =</span> treatments, <span class="at">col =</span> col_treatments, <span class="at">lwd =</span> line_width)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
+<div id="fig-data-model-prediction" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure">
-<p><img src="analysis_files/figure-html/unnamed-chunk-40-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="analysis_files/figure-html/fig-data-model-prediction-1.png" class="img-fluid figure-img" width="672"></p>
+<figcaption class="figure-caption">Figure&nbsp;6: visual assessment of the fit of the model to the data of Table 2 of <a href="https://doi.org/10.1164/rccm.201103-0397oc">10.1164/rccm.201103-0397OC</a>.</figcaption>
 </figure>
 </div>
 </div>
@@ -652,106 +660,111 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="speculations-in-humans" class="level2" data-number="7">
 <h2 data-number="7" class="anchored" data-anchor-id="speculations-in-humans"><span class="header-section-number">7</span> Speculations in humans</h2>
 <p>Let’s see what happens if we change the initial CFU:</p>
-<div class="cell" data-layout-align="center" data-hash="analysis_cache/html/unnamed-chunk-41_9f77c0502d91e74e6bdfadeb0ad557bb">
-<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a>opar <span class="ot">&lt;-</span> <span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">3</span>), <span class="at">cex =</span> <span class="dv">1</span>, <span class="at">plt =</span> <span class="fu">c</span>(.<span class="dv">2</span>, .<span class="dv">95</span>, .<span class="dv">1983</span>, .<span class="dv">8947</span>))</span>
-<span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a><span class="fu">walk</span>(<span class="dv">10</span><span class="sc">^</span>(<span class="dv">4</span><span class="sc">:</span><span class="dv">2</span>), <span class="sc">~</span> <span class="fu">predicted_cfu</span>(<span class="at">xlab =</span> <span class="st">"time (weeks)"</span>, <span class="at">log =</span> <span class="cn">TRUE</span>, <span class="at">cfu0 =</span> .x))</span>
-<span id="cb56-3"><a href="#cb56-3" aria-hidden="true" tabindex="-1"></a><span class="fu">add_legend</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-layout-align="center" data-hash="analysis_cache/html/fig-effect-of-initial-cfu_4e5e0fd8f0d0d2cfb047f54d0a1fc011">
+<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a>opar <span class="ot">&lt;-</span> <span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">3</span>), <span class="at">cex =</span> <span class="dv">1</span>, <span class="at">plt =</span> <span class="fu">c</span>(.<span class="dv">2</span>, .<span class="dv">95</span>, .<span class="dv">1983</span>, .<span class="dv">8947</span>))</span>
+<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a><span class="fu">walk</span>(<span class="dv">10</span><span class="sc">^</span>(<span class="dv">4</span><span class="sc">:</span><span class="dv">2</span>), <span class="sc">~</span> <span class="fu">predicted_cfu</span>(<span class="at">xlab =</span> <span class="st">"time (weeks)"</span>, <span class="at">log =</span> <span class="cn">TRUE</span>, <span class="at">cfu0 =</span> .x))</span>
+<span id="cb53-3"><a href="#cb53-3" aria-hidden="true" tabindex="-1"></a><span class="fu">add_legend</span>()</span>
+<span id="cb53-4"><a href="#cb53-4" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(opar)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
+<div id="fig-effect-of-initial-cfu" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure">
-<p><img src="analysis_files/figure-html/unnamed-chunk-41-1.png" class="img-fluid figure-img" width="816"></p>
+<p><img src="analysis_files/figure-html/fig-effect-of-initial-cfu-1.png" class="img-fluid figure-img" width="816"></p>
+<figcaption class="figure-caption">Figure&nbsp;7: decay dynamics of CFU as a function of initial CFU value.</figcaption>
 </figure>
 </div>
 </div>
-<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(opar)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Another version of the <code>predicted_cfu2()</code> function:</p>
 <div class="cell" data-layout-align="center" data-hash="analysis_cache/html/predicted_cfu2_f95a0c8680812c30d385d2852a9ceb26">
-<div class="sourceCode cell-code" id="cb58"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a>predicted_cfu2 <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">t_max =</span> <span class="dv">6</span> <span class="sc">*</span> <span class="dv">30</span>, <span class="at">agg =</span> <span class="dv">7</span>, <span class="at">log =</span> <span class="cn">FALSE</span>,</span>
-<span id="cb58-2"><a href="#cb58-2" aria-hidden="true" tabindex="-1"></a>                           <span class="at">cfu0 =</span> <span class="dv">10</span><span class="sc">^</span>(<span class="dv">2</span><span class="sc">:</span><span class="dv">4</span>), est_drug, col, ...) {</span>
-<span id="cb58-3"><a href="#cb58-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot_frame</span>(<span class="at">t_max =</span> t_max, <span class="at">agg =</span> agg, <span class="at">log =</span> log, ...)</span>
-<span id="cb58-4"><a href="#cb58-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">walk</span>(cfu0, add_pred,</span>
-<span id="cb58-5"><a href="#cb58-5" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="fu">coef</span>(est_drug), <span class="at">col =</span> col, <span class="at">t_max =</span> t_max, <span class="at">alpha =</span> .<span class="dv">2</span>, <span class="at">aggregation =</span> agg)</span>
-<span id="cb58-6"><a href="#cb58-6" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a>predicted_cfu2 <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">t_max =</span> <span class="dv">6</span> <span class="sc">*</span> <span class="dv">30</span>, <span class="at">agg =</span> <span class="dv">7</span>, <span class="at">log =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a>                           <span class="at">cfu0 =</span> <span class="dv">10</span><span class="sc">^</span>(<span class="dv">2</span><span class="sc">:</span><span class="dv">4</span>), est_drug, col, ...) {</span>
+<span id="cb54-3"><a href="#cb54-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot_frame</span>(<span class="at">t_max =</span> t_max, <span class="at">agg =</span> agg, <span class="at">log =</span> log, ...)</span>
+<span id="cb54-4"><a href="#cb54-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">walk</span>(cfu0, add_pred,</span>
+<span id="cb54-5"><a href="#cb54-5" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="fu">coef</span>(est_drug), <span class="at">col =</span> col, <span class="at">t_max =</span> t_max, <span class="at">alpha =</span> .<span class="dv">2</span>, <span class="at">aggregation =</span> agg)</span>
+<span id="cb54-6"><a href="#cb54-6" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Another way to look at the effect of initial CFU on the decay:</p>
-<div class="cell" data-layout-align="center" data-hash="analysis_cache/html/unnamed-chunk-42_d49ed0474ee96ddd27ff2fb6456fa226">
-<div class="sourceCode cell-code" id="cb59"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a>predicted_cfu2_tmp <span class="ot">&lt;-</span> <span class="cf">function</span>(...) {</span>
-<span id="cb59-2"><a href="#cb59-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">predicted_cfu2</span>(..., <span class="at">log =</span> <span class="cn">TRUE</span>, <span class="at">xlab =</span> <span class="st">"time (weeks)"</span>)</span>
-<span id="cb59-3"><a href="#cb59-3" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb59-4"><a href="#cb59-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb59-5"><a href="#cb59-5" aria-hidden="true" tabindex="-1"></a>opar <span class="ot">&lt;-</span> <span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">3</span>), <span class="at">cex =</span> <span class="dv">1</span>, <span class="at">plt =</span> <span class="fu">c</span>(.<span class="dv">2</span>, .<span class="dv">95</span>, .<span class="dv">1983</span>, .<span class="dv">8947</span>))</span>
-<span id="cb59-6"><a href="#cb59-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb59-7"><a href="#cb59-7" aria-hidden="true" tabindex="-1"></a><span class="fu">predicted_cfu2_tmp</span>(<span class="at">est_drug =</span> est_RIF,    <span class="at">col =</span> col_treatments[<span class="dv">2</span>])</span>
-<span id="cb59-8"><a href="#cb59-8" aria-hidden="true" tabindex="-1"></a><span class="fu">title2</span>(<span class="st">"RIF"</span>)</span>
-<span id="cb59-9"><a href="#cb59-9" aria-hidden="true" tabindex="-1"></a><span class="fu">predicted_cfu2_tmp</span>(<span class="at">est_drug =</span> est_RIFINH, <span class="at">col =</span> col_treatments[<span class="dv">3</span>])</span>
-<span id="cb59-10"><a href="#cb59-10" aria-hidden="true" tabindex="-1"></a><span class="fu">title2</span>(<span class="st">"RIF+INH"</span>)</span>
-<span id="cb59-11"><a href="#cb59-11" aria-hidden="true" tabindex="-1"></a><span class="fu">predicted_cfu2_tmp</span>(<span class="at">est_drug =</span> est_RPTINH, <span class="at">col =</span> col_treatments[<span class="dv">4</span>])</span>
-<span id="cb59-12"><a href="#cb59-12" aria-hidden="true" tabindex="-1"></a><span class="fu">title2</span>(<span class="st">"RPT+INH"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-layout-align="center" data-hash="analysis_cache/html/fig-effect-of-initial-cfu2_20ef02a596b8ac886c81359b93f62624">
+<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a>predicted_cfu2_tmp <span class="ot">&lt;-</span> <span class="cf">function</span>(...) {</span>
+<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">predicted_cfu2</span>(..., <span class="at">log =</span> <span class="cn">TRUE</span>, <span class="at">xlab =</span> <span class="st">"time (weeks)"</span>)</span>
+<span id="cb55-3"><a href="#cb55-3" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb55-4"><a href="#cb55-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb55-5"><a href="#cb55-5" aria-hidden="true" tabindex="-1"></a>opar <span class="ot">&lt;-</span> <span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">3</span>), <span class="at">cex =</span> <span class="dv">1</span>, <span class="at">plt =</span> <span class="fu">c</span>(.<span class="dv">2</span>, .<span class="dv">95</span>, .<span class="dv">1983</span>, .<span class="dv">8947</span>))</span>
+<span id="cb55-6"><a href="#cb55-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb55-7"><a href="#cb55-7" aria-hidden="true" tabindex="-1"></a><span class="fu">predicted_cfu2_tmp</span>(<span class="at">est_drug =</span> est_RIF,    <span class="at">col =</span> col_treatments[<span class="dv">2</span>])</span>
+<span id="cb55-8"><a href="#cb55-8" aria-hidden="true" tabindex="-1"></a><span class="fu">title2</span>(<span class="st">"RIF"</span>)</span>
+<span id="cb55-9"><a href="#cb55-9" aria-hidden="true" tabindex="-1"></a><span class="fu">predicted_cfu2_tmp</span>(<span class="at">est_drug =</span> est_RIFINH, <span class="at">col =</span> col_treatments[<span class="dv">3</span>])</span>
+<span id="cb55-10"><a href="#cb55-10" aria-hidden="true" tabindex="-1"></a><span class="fu">title2</span>(<span class="st">"RIF+INH"</span>)</span>
+<span id="cb55-11"><a href="#cb55-11" aria-hidden="true" tabindex="-1"></a><span class="fu">predicted_cfu2_tmp</span>(<span class="at">est_drug =</span> est_RPTINH, <span class="at">col =</span> col_treatments[<span class="dv">4</span>])</span>
+<span id="cb55-12"><a href="#cb55-12" aria-hidden="true" tabindex="-1"></a><span class="fu">title2</span>(<span class="st">"RPT+INH"</span>)</span>
+<span id="cb55-13"><a href="#cb55-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb55-14"><a href="#cb55-14" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(opar)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
+<div id="fig-effect-of-initial-cfu2" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure">
-<p><img src="analysis_files/figure-html/unnamed-chunk-42-1.png" class="img-fluid figure-img" width="816"></p>
+<p><img src="analysis_files/figure-html/fig-effect-of-initial-cfu2-1.png" class="img-fluid figure-img" width="816"></p>
+<figcaption class="figure-caption">Figure&nbsp;8: another way to look at the decay dynamics of CFU as a function of initial CFU value.</figcaption>
 </figure>
 </div>
 </div>
-<div class="sourceCode cell-code" id="cb60"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(opar)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>The following function calculates the time of sterilization:</p>
 <div class="cell" data-layout-align="center" data-hash="analysis_cache/html/unnamed-chunk-43_30d1ebacd09ebfd42a411216f3c2966d">
-<div class="sourceCode cell-code" id="cb61"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a>cfu1_time <span class="ot">&lt;-</span> <span class="cf">function</span>(x, <span class="at">cfu0 =</span> <span class="fl">1e4</span>, <span class="at">p =</span> .<span class="dv">5</span>) {</span>
-<span id="cb61-2"><a href="#cb61-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">optimize</span>(</span>
-<span id="cb61-3"><a href="#cb61-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">function</span>(t) <span class="fu">abs</span>(<span class="fu">log</span>(<span class="fu">cfu</span>(cfu0, <span class="fu">qgamma2</span>(p, x[<span class="st">"mu"</span>], x[<span class="st">"sigma"</span>]), t))),</span>
-<span id="cb61-4"><a href="#cb61-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">200</span>)</span>
-<span id="cb61-5"><a href="#cb61-5" aria-hidden="true" tabindex="-1"></a>  )<span class="sc">$</span>minimum</span>
-<span id="cb61-6"><a href="#cb61-6" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a>cfu1_time <span class="ot">&lt;-</span> <span class="cf">function</span>(x, <span class="at">cfu0 =</span> <span class="fl">1e4</span>, <span class="at">p =</span> .<span class="dv">5</span>) {</span>
+<span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">optimize</span>(</span>
+<span id="cb56-3"><a href="#cb56-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">function</span>(t) <span class="fu">abs</span>(<span class="fu">log</span>(<span class="fu">cfu</span>(cfu0, <span class="fu">qgamma2</span>(p, x[<span class="st">"mu"</span>], x[<span class="st">"sigma"</span>]), t))),</span>
+<span id="cb56-4"><a href="#cb56-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">200</span>)</span>
+<span id="cb56-5"><a href="#cb56-5" aria-hidden="true" tabindex="-1"></a>  )<span class="sc">$</span>minimum</span>
+<span id="cb56-6"><a href="#cb56-6" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>The following function calculate the time of sterilization together with confidence interval:</p>
 <div class="cell" data-layout-align="center" data-hash="analysis_cache/html/unnamed-chunk-44_64bb60486fad54d02041701bdbcfc4ec">
-<div class="sourceCode cell-code" id="cb62"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a>CFU0_effect_cfu1_time <span class="ot">&lt;-</span> <span class="cf">function</span>(x, cfu0) {</span>
-<span id="cb62-2"><a href="#cb62-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">map_dfc</span>(<span class="fu">c</span>(<span class="at">upper =</span> .<span class="dv">025</span>, <span class="at">median =</span> .<span class="dv">5</span>, <span class="at">lower =</span> .<span class="dv">975</span>), cfu1_time, <span class="at">x =</span> x, <span class="at">cfu0 =</span> cfu0)</span>
-<span id="cb62-3"><a href="#cb62-3" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a>CFU0_effect_cfu1_time <span class="ot">&lt;-</span> <span class="cf">function</span>(x, cfu0) {</span>
+<span id="cb57-2"><a href="#cb57-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">map_dfc</span>(<span class="fu">c</span>(<span class="at">upper =</span> .<span class="dv">025</span>, <span class="at">median =</span> .<span class="dv">5</span>, <span class="at">lower =</span> .<span class="dv">975</span>), cfu1_time, <span class="at">x =</span> x, <span class="at">cfu0 =</span> cfu0)</span>
+<span id="cb57-3"><a href="#cb57-3" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell" data-layout-align="center" data-hash="analysis_cache/html/unnamed-chunk-45_eb597eb017de7d7f708076fd751ea550">
-<div class="sourceCode cell-code" id="cb63"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a>add_speculation1 <span class="ot">&lt;-</span> <span class="cf">function</span>(x, col, <span class="at">alpha =</span> .<span class="dv">2</span>) {</span>
-<span id="cb63-2"><a href="#cb63-2" aria-hidden="true" tabindex="-1"></a>  cfu0_val <span class="ot">&lt;-</span> <span class="dv">10</span><span class="sc">^</span><span class="fu">seq3</span>(<span class="dv">0</span>, <span class="dv">4</span>)</span>
-<span id="cb63-3"><a href="#cb63-3" aria-hidden="true" tabindex="-1"></a>  out <span class="ot">&lt;-</span> <span class="fu">map_dfr</span>(cfu0_val, CFU0_effect_cfu1_time, <span class="at">x =</span> <span class="fu">coef</span>(x))</span>
-<span id="cb63-4"><a href="#cb63-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">polygon2</span>(cfu0_val, out<span class="sc">$</span>upper, out<span class="sc">$</span>lower, <span class="at">col =</span> col)</span>
-<span id="cb63-5"><a href="#cb63-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">lines2</span>(cfu0_val, out<span class="sc">$</span>median, <span class="at">col =</span> col)</span>
-<span id="cb63-6"><a href="#cb63-6" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb58"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a>add_speculation1 <span class="ot">&lt;-</span> <span class="cf">function</span>(x, col, <span class="at">alpha =</span> .<span class="dv">2</span>) {</span>
+<span id="cb58-2"><a href="#cb58-2" aria-hidden="true" tabindex="-1"></a>  cfu0_val <span class="ot">&lt;-</span> <span class="dv">10</span><span class="sc">^</span><span class="fu">seq3</span>(<span class="dv">0</span>, <span class="dv">4</span>)</span>
+<span id="cb58-3"><a href="#cb58-3" aria-hidden="true" tabindex="-1"></a>  out <span class="ot">&lt;-</span> <span class="fu">map_dfr</span>(cfu0_val, CFU0_effect_cfu1_time, <span class="at">x =</span> <span class="fu">coef</span>(x))</span>
+<span id="cb58-4"><a href="#cb58-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">polygon2</span>(cfu0_val, out<span class="sc">$</span>upper, out<span class="sc">$</span>lower, <span class="at">col =</span> col)</span>
+<span id="cb58-5"><a href="#cb58-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">lines2</span>(cfu0_val, out<span class="sc">$</span>median, <span class="at">col =</span> col)</span>
+<span id="cb58-6"><a href="#cb58-6" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell" data-layout-align="center" data-hash="analysis_cache/html/unnamed-chunk-46_c4b7f1d20f3a242fe7ddcd7be591b25a">
-<div class="sourceCode cell-code" id="cb64"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a>add_speculation2 <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">v_val =</span> <span class="fu">unlist</span>(<span class="fu">map</span>(<span class="dv">10</span><span class="sc">^</span>(<span class="dv">0</span><span class="sc">:</span><span class="dv">3</span>), <span class="sc">~</span> .x <span class="sc">*</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>)),</span>
-<span id="cb64-2"><a href="#cb64-2" aria-hidden="true" tabindex="-1"></a>                             <span class="at">h_val =</span> <span class="dv">10</span> <span class="sc">*</span> <span class="dv">0</span><span class="sc">:</span><span class="dv">20</span>) {</span>
-<span id="cb64-3"><a href="#cb64-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">abline2</span>(<span class="at">v =</span> v_val); <span class="fu">abline2</span>(<span class="at">h =</span> h_val)</span>
-<span id="cb64-4"><a href="#cb64-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">axis</span>(<span class="dv">1</span>); <span class="fu">axis</span>(<span class="dv">2</span>)</span>
-<span id="cb64-5"><a href="#cb64-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">walk2</span>(<span class="fu">list</span>(est_RIF, est_RIFINH, est_RPTINH), col_treatments[<span class="sc">-</span><span class="dv">1</span>], add_speculation1)</span>
-<span id="cb64-6"><a href="#cb64-6" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb59"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a>add_speculation2 <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">v_val =</span> <span class="fu">unlist</span>(<span class="fu">map</span>(<span class="dv">10</span><span class="sc">^</span>(<span class="dv">0</span><span class="sc">:</span><span class="dv">3</span>), <span class="sc">~</span> .x <span class="sc">*</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>)),</span>
+<span id="cb59-2"><a href="#cb59-2" aria-hidden="true" tabindex="-1"></a>                             <span class="at">h_val =</span> <span class="dv">10</span> <span class="sc">*</span> <span class="dv">0</span><span class="sc">:</span><span class="dv">20</span>) {</span>
+<span id="cb59-3"><a href="#cb59-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">abline2</span>(<span class="at">v =</span> v_val); <span class="fu">abline2</span>(<span class="at">h =</span> h_val)</span>
+<span id="cb59-4"><a href="#cb59-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">axis</span>(<span class="dv">1</span>); <span class="fu">axis</span>(<span class="dv">2</span>)</span>
+<span id="cb59-5"><a href="#cb59-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">walk2</span>(<span class="fu">list</span>(est_RIF, est_RIFINH, est_RPTINH), col_treatments[<span class="sc">-</span><span class="dv">1</span>], add_speculation1)</span>
+<span id="cb59-6"><a href="#cb59-6" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell" data-layout-align="center" data-hash="analysis_cache/html/unnamed-chunk-47_c4b5b002320c9ae877de095fb7f0e2dc">
-<div class="sourceCode cell-code" id="cb65"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a>opar <span class="ot">&lt;-</span> <span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">3</span>), <span class="at">cex =</span> <span class="dv">1</span>, <span class="at">plt =</span> <span class="fu">c</span>(.<span class="dv">2</span>, .<span class="dv">95</span>, .<span class="dv">1983</span>, .<span class="dv">8947</span>))</span>
-<span id="cb65-2"><a href="#cb65-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb65-3"><a href="#cb65-3" aria-hidden="true" tabindex="-1"></a>plot_tmp <span class="ot">&lt;-</span> <span class="cf">function</span>(...) {</span>
-<span id="cb65-4"><a href="#cb65-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot</span>(..., <span class="at">axes =</span> <span class="cn">FALSE</span>, <span class="at">xlab =</span> <span class="st">"initial CFU"</span>, <span class="at">ylab =</span> <span class="st">"time of clearance (days)"</span>)</span>
-<span id="cb65-5"><a href="#cb65-5" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb65-6"><a href="#cb65-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb65-7"><a href="#cb65-7" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_tmp</span>(<span class="cn">NA</span>, <span class="at">xlim =</span> <span class="dv">10</span><span class="sc">^</span><span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">4</span>), <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">200</span>), <span class="at">log =</span> <span class="st">"x"</span>)</span>
-<span id="cb65-8"><a href="#cb65-8" aria-hidden="true" tabindex="-1"></a><span class="fu">add_speculation2</span>()</span>
-<span id="cb65-9"><a href="#cb65-9" aria-hidden="true" tabindex="-1"></a><span class="fu">add_legend</span>(<span class="st">"topleft"</span>)</span>
-<span id="cb65-10"><a href="#cb65-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb65-11"><a href="#cb65-11" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_tmp</span>(<span class="cn">NA</span>, <span class="at">xlim =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">50</span>), <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">100</span>))</span>
-<span id="cb65-12"><a href="#cb65-12" aria-hidden="true" tabindex="-1"></a><span class="fu">add_speculation2</span>(<span class="at">v_val =</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">50</span>, <span class="dv">5</span>))</span>
-<span id="cb65-13"><a href="#cb65-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb65-14"><a href="#cb65-14" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_tmp</span>(<span class="cn">NA</span>, <span class="at">xlim =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">10</span>), <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">50</span>))</span>
-<span id="cb65-15"><a href="#cb65-15" aria-hidden="true" tabindex="-1"></a><span class="fu">add_speculation2</span>(<span class="at">h_val =</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">50</span>, <span class="dv">5</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-layout-align="center" data-hash="analysis_cache/html/fig-sterilization-and-initial-cfu_b865640329aa3397ff6db9e921fd51d8">
+<div class="sourceCode cell-code" id="cb60"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a>opar <span class="ot">&lt;-</span> <span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">3</span>), <span class="at">cex =</span> <span class="dv">1</span>, <span class="at">plt =</span> <span class="fu">c</span>(.<span class="dv">2</span>, .<span class="dv">95</span>, .<span class="dv">1983</span>, .<span class="dv">8947</span>))</span>
+<span id="cb60-2"><a href="#cb60-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb60-3"><a href="#cb60-3" aria-hidden="true" tabindex="-1"></a>plot_tmp <span class="ot">&lt;-</span> <span class="cf">function</span>(...) {</span>
+<span id="cb60-4"><a href="#cb60-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot</span>(..., <span class="at">axes =</span> <span class="cn">FALSE</span>, <span class="at">xlab =</span> <span class="st">"initial CFU"</span>, <span class="at">ylab =</span> <span class="st">"time of clearance (days)"</span>)</span>
+<span id="cb60-5"><a href="#cb60-5" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb60-6"><a href="#cb60-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb60-7"><a href="#cb60-7" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_tmp</span>(<span class="cn">NA</span>, <span class="at">xlim =</span> <span class="dv">10</span><span class="sc">^</span><span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">4</span>), <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">200</span>), <span class="at">log =</span> <span class="st">"x"</span>)</span>
+<span id="cb60-8"><a href="#cb60-8" aria-hidden="true" tabindex="-1"></a><span class="fu">add_speculation2</span>()</span>
+<span id="cb60-9"><a href="#cb60-9" aria-hidden="true" tabindex="-1"></a><span class="fu">add_legend</span>(<span class="st">"topleft"</span>)</span>
+<span id="cb60-10"><a href="#cb60-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb60-11"><a href="#cb60-11" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_tmp</span>(<span class="cn">NA</span>, <span class="at">xlim =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">50</span>), <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">100</span>))</span>
+<span id="cb60-12"><a href="#cb60-12" aria-hidden="true" tabindex="-1"></a><span class="fu">add_speculation2</span>(<span class="at">v_val =</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">50</span>, <span class="dv">5</span>))</span>
+<span id="cb60-13"><a href="#cb60-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb60-14"><a href="#cb60-14" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_tmp</span>(<span class="cn">NA</span>, <span class="at">xlim =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">10</span>), <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">50</span>))</span>
+<span id="cb60-15"><a href="#cb60-15" aria-hidden="true" tabindex="-1"></a><span class="fu">add_speculation2</span>(<span class="at">h_val =</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">50</span>, <span class="dv">5</span>))</span>
+<span id="cb60-16"><a href="#cb60-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb60-17"><a href="#cb60-17" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(opar)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
+<div id="fig-sterilization-and-initial-cfu" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure">
-<p><img src="analysis_files/figure-html/unnamed-chunk-47-1.png" class="img-fluid figure-img" width="816"></p>
+<p><img src="analysis_files/figure-html/fig-sterilization-and-initial-cfu-1.png" class="img-fluid figure-img" width="816"></p>
+<figcaption class="figure-caption">Figure&nbsp;9: time at which sterilization is reached as a function of the initial CFU value.</figcaption>
 </figure>
 </div>
 </div>
-<div class="sourceCode cell-code" id="cb66"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(opar)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 

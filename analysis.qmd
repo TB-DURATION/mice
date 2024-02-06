@@ -269,6 +269,10 @@ plot_data_prop_est <- function(polyg = TRUE, connect = TRUE) {
 The plot showing points estimates with confidence intervals from the data:
 
 ```{r dependson = "plot_data_prop_est"}
+#| label: fig-charts
+#| fig-cap: "experimental proportions of positive ($n$ = 15) for the 4 treatments of
+#| Table 2 of [10.1164/rccm.201103-0397OC](https://doi.org/10.1164/rccm.201103-0397oc)."
+
 plot_data_prop_est()
 legend2("bottomright", legend = treatments, col = col_treatments, lwd = line_width)
 ```
@@ -376,6 +380,11 @@ plot_cfu <- function(mu_val, sigma_val, t_val, col_val, leg) {
 Let's look at 2 time points:
 
 ```{r fig.height = 4, fig.width  = 1.6 * 5}
+#| label: fig-model-predictions
+#| fig-cap: "model-predicted proportion of positive in an population of infinite size as
+#| a function of (a) mean decay rate ($x$-axis), (b) inter-individual variability
+#| (3 lines), and (c) time (2 panels)."
+
 opar <- par(mfrow = 1:2, cex = 1, plt = c(.2, .95, .2, .8))
 
 walk2(c(25, 45),
@@ -458,6 +467,10 @@ show_mLL <- function(x, ...) {
 Let's try it:
 
 ```{r dependson = "show_mLL", fig.height = 1.3 * 5, fig.width  = 1.5 * 5}
+#| label: fig-likelihood-surface
+#| fig-cap: "likelihood surface of the model with the data from the 4 treatments of
+#| Table 2 of [10.1164/rccm.201103-0397OC](https://doi.org/10.1164/rccm.201103-0397oc)."
+
 opar <- par(mfrow = c(2, 2), cex = 1, plt = c(.17, .93, .2, .87))
 
 walk2(list(mLL_INH, mLL_RIF, mLL_RIFINH, mLL_RPTINH),
@@ -512,6 +525,10 @@ The following figure shows the estimated inter-individual variability of the
 exponential decay rate:
 
 ```{r}
+#| label: fig-inferred-distribution-decay-rate
+#| fig-cap: "inferred distributions of the rate of CFU decay for 3 treatments of Table
+#| 2 of [10.1164/rccm.201103-0397OC](https://doi.org/10.1164/rccm.201103-0397oc)."
+
 nb_pts <- 512
 x_max <- .45
 x_val <- seq(0, x_max, le = nb_pts)
@@ -562,6 +579,10 @@ predicted_cfu <- function(t_max = 6 * 30, agg = 7, log = FALSE, cfu0 = 1e4, ...)
 Let's try it:
 
 ```{r dependson = "predicted_cfu", fig.width = 1.7 * 5, fig.height = 3.1}
+#| label: fig-predicted-cfu-decay
+#| fig-cap: "model-predicted decay of CFU from the experimental data of Table 2 of
+#| [10.1164/rccm.201103-0397OC](https://doi.org/10.1164/rccm.201103-0397oc)."
+
 opar <- par(mfrow = c(1, 3), cex = 1, plt = c(.2, .95, .1983, .8947))
 predicted_cfu(xlab = "time (weeks)")
 add_legend()
@@ -590,6 +611,10 @@ Proportion of individuals with CFU > 1 as a function of time in a population of
 15 individuals:
 
 ```{r dependson = "plot_data_prop_est"}
+#| label: fig-data-model-prediction
+#| fig-cap: "visual assessment of the fit of the model to the data of Table 2 of
+#| [10.1164/rccm.201103-0397OC](https://doi.org/10.1164/rccm.201103-0397oc)."
+
 plot_data_prop_est(FALSE, FALSE)
 add_mod_pred(coef(est_RIF), col_treatments[2])
 add_mod_pred(coef(est_RIFINH), col_treatments[3])
@@ -603,6 +628,9 @@ legend("topright", legend = treatments, col = col_treatments, lwd = line_width)
 Let's see what happens if we change the initial CFU:
 
 ```{r fig.width = 1.7 * 5, fig.height = 3.1}
+#| label: fig-effect-of-initial-cfu
+#| fig-cap: "decay dynamics of CFU as a function of initial CFU value."
+
 opar <- par(mfrow = c(1, 3), cex = 1, plt = c(.2, .95, .1983, .8947))
 walk(10^(4:2), ~ predicted_cfu(xlab = "time (weeks)", log = TRUE, cfu0 = .x))
 add_legend()
@@ -623,6 +651,10 @@ predicted_cfu2 <- function(t_max = 6 * 30, agg = 7, log = FALSE,
 Another way to look at the effect of initial CFU on the decay:
 
 ```{r dependson = "predicted_cfu2", fig.width = 1.7 * 5, fig.height = 3.1}
+#| label: fig-effect-of-initial-cfu2
+#| fig-cap: "another way to look at the decay dynamics of CFU as a function of initial
+#| CFU value."
+
 predicted_cfu2_tmp <- function(...) {
   predicted_cfu2(..., log = TRUE, xlab = "time (weeks)")
 }
@@ -678,6 +710,10 @@ add_speculation2 <- function(v_val = unlist(map(10^(0:3), ~ .x * 1:10)),
 ```
 
 ```{r fig.width = 1.7 * 5, fig.height = 3.1}
+#| label: fig-sterilization-and-initial-cfu
+#| fig-cap: "time at which sterilization is reached as a function of the initial CFU
+#| value."
+
 opar <- par(mfrow = c(1, 3), cex = 1, plt = c(.2, .95, .1983, .8947))
 
 plot_tmp <- function(...) {
