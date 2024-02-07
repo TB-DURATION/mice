@@ -641,6 +641,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
+<p>We can compare this model predictions at individual level with Figure 3 of <a href="https://doi.org/10.1164/rccm.201103-0397oc">10.1164/rccm.201103-0397OC</a> that shows CFU after 1 month of treatment, see <a href="#fig-figure-3">Figure&nbsp;7</a> below.</p>
+<div id="fig-figure-3" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="figure%203.png" class="img-fluid figure-img" style="width:45.0%"></p>
+<figcaption class="figure-caption">Figure&nbsp;7: Figure 3 from <a href="https://doi.org/10.1164/rccm.201103-0397oc">10.1164/rccm.201103-0397OC</a>.</figcaption>
+</figure>
+</div>
 <p>A function that adds model-predicted proportions of individual with CFU &gt; 1 in a population of 15 individuals:</p>
 <div class="cell" data-layout-align="center" data-hash="analysis_cache/html/unnamed-chunk-40_aa865f14d6001ffce09f198ab287cdfc">
 <div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>add_mod_pred <span class="ot">&lt;-</span> <span class="cf">function</span>(x, col, <span class="at">alpha =</span> .<span class="dv">2</span>) {</span>
@@ -679,7 +686,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div id="fig-data-model-prediction" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure">
 <p><img src="analysis_files/figure-html/fig-data-model-prediction-1.png" class="img-fluid figure-img" width="720"></p>
-<figcaption class="figure-caption">Figure&nbsp;7: visual assessment of the fit of the model to the data of Table 2 of <a href="https://doi.org/10.1164/rccm.201103-0397oc">10.1164/rccm.201103-0397OC</a>.</figcaption>
+<figcaption class="figure-caption">Figure&nbsp;8: visual assessment of the fit of the model to the data of Table 2 of <a href="https://doi.org/10.1164/rccm.201103-0397oc">10.1164/rccm.201103-0397OC</a>.</figcaption>
 </figure>
 </div>
 </div>
@@ -712,7 +719,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div id="fig-effect-of-initial-cfu2" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure">
 <p><img src="analysis_files/figure-html/fig-effect-of-initial-cfu2-1.png" class="img-fluid figure-img" width="720"></p>
-<figcaption class="figure-caption">Figure&nbsp;8: another way to look at the decay dynamics of CFU as a function of initial CFU value.</figcaption>
+<figcaption class="figure-caption">Figure&nbsp;9: another way to look at the decay dynamics of CFU as a function of initial CFU value.</figcaption>
 </figure>
 </div>
 </div>
@@ -768,7 +775,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div id="fig-sterilization-and-initial-cfu" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure">
 <p><img src="analysis_files/figure-html/fig-sterilization-and-initial-cfu-1.png" class="img-fluid figure-img" width="571"></p>
-<figcaption class="figure-caption">Figure&nbsp;9: time at which sterilization is reached as a function of the initial CFU value.</figcaption>
+<figcaption class="figure-caption">Figure&nbsp;10: time at which sterilization is reached as a function of the initial CFU value.</figcaption>
 </figure>
 </div>
 </div>

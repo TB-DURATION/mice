@@ -600,6 +600,12 @@ pwalk(list(est, col_treatments[-1], treatments[-1]),
 par(opar)
 ```
 
+We can compare this model predictions at individual level with Figure 3 of
+[10.1164/rccm.201103-0397OC](https://doi.org/10.1164/rccm.201103-0397oc)
+that shows CFU after 1 month of treatment, see @fig-figure-3 below.
+
+![Figure 3 from [10.1164/rccm.201103-0397OC](https://doi.org/10.1164/rccm.201103-0397oc).](figure 3.png){#fig-figure-3 width=45%}
+
 A function that adds model-predicted proportions of individual with CFU > 1 in 
 a population of 15 individuals:
 
