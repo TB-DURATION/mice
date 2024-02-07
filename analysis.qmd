@@ -34,7 +34,10 @@ Zhang *et al.*
 "Short-course chemotherapy with TMC207 and rifapentine in a murine model of
 latent tuberculosis infection".
 *American Journal of Respiratory and Critical Care Medicine* 184.6 (2011): 732-737.
-DOI: [10.1164/rccm.201103-0397OC](https://doi.org/10.1164/rccm.201103-0397oc)
+DOI: [10.1164/rccm.201103-0397OC](https://doi.org/10.1164/rccm.201103-0397oc).
+Specifically the data from Table 2 shown in @fig-table-2 below.
+
+![Table 2 from [10.1164/rccm.201103-0397OC](https://doi.org/10.1164/rccm.201103-0397oc).](table 2.png){#fig-table-2}
 
 The data show the proportion of positive mice as a function of time (about 15
 mice per time point and treatment) but what we are interested in is the CFU
@@ -70,12 +73,6 @@ Width of the lines:
 
 ```{r}
 line_width <- 2
-```
-
-Colors of the treatments:
-
-```{r}
-col_treatments <- 1:4
 ```
 
 A function that adds proportions estimates and confidence intervals to a data
@@ -213,12 +210,6 @@ The data look like this:
 table2
 ```
 
-And the treatments are as so:
-
-```{r}
-(treatments <- unique(table2$group))
-```
-
 Preparing the data for vizualization by:
 
 * computing the proportions of positive mice with 95% confidence intervals
@@ -234,6 +225,18 @@ It looks like this:
 
 ```{r}
 table2a
+```
+
+The treatments:
+
+```{r}
+treatments <- unique(table2$group)
+```
+
+The colors of the treatments:
+
+```{r}
+col_treatments <- setNames(seq_along(treatments), treatments)
 ```
 
 A function that plots proportion estimates and confidence intervals for a given
@@ -394,7 +397,7 @@ walk2(c(25, 45),
       ~ plot_cfu(mu_val    = seq3(.001, .5), # (/day)
                  sigma_val = c(.01, .05, .11), # (/day)
                  t_val     = .x, # (day)
-                 col_val   = col_treatments[-1],
+                 col_val   = 2:4,
                  leg       = .y))
 
 par(opar)
@@ -548,9 +551,9 @@ plot(NA, xlim = c(0, x_max), ylim = c(0, 25),
 
 c(est_RIF, est_RIFINH, est_RPTINH) |> 
   map(coef) |> 
-  walk2(col_treatments[-1], add_area)
+  walk2(col_treatments[2:4], add_area)
 
-legend2("topright", legend = treatments[-1], col = col_treatments[-1], lwd = 2)
+legend2("topright", legend = treatments[-1], col = col_treatments[2:4], lwd = 2)
 ```
 
 A function that adds model predictions to a plot:
@@ -574,7 +577,7 @@ predicted_cfu <- function(t_max = 6 * 30, agg = 7, log = FALSE, cfu0 = 1e4, ...)
   plot_frame(t_max = t_max, agg = agg, log = log, ...)
   list(est_RIF, est_RIFINH, est_RPTINH) |> 
     map(coef) |> 
-    walk2(col_treatments[-1], add_pred, t_max, cfu0, aggregation = agg)
+    walk2(col_treatments[2:4], add_pred, t_max, cfu0, aggregation = agg)
 }
 ```
 
@@ -707,7 +710,7 @@ add_speculation2 <- function(v_val = unlist(map(10^(0:3), ~ .x * 1:10)),
                              h_val = 10 * 0:20) {
   abline2(v = v_val); abline2(h = h_val)
   axis(1); axis(2)
-  walk2(list(est_RIF, est_RIFINH, est_RPTINH), col_treatments[-1], add_speculation1)
+  walk2(list(est_RIF, est_RIFINH, est_RPTINH), col_treatments[2:4], add_speculation1)
 }
 ```
 
