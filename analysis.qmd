@@ -25,6 +25,8 @@ knitr::opts_chunk$set(echo       = TRUE,
 
 All the data and source code files are [here](https://github.com/TB-DURATION/mice).
 
+You can ask for additional analysis [here](https://github.com/TB-DURATION/mice/issues).
+
 ## Introduction
 
 Here we are working on the data from
@@ -269,7 +271,7 @@ plot_data_prop_est <- function(polyg = TRUE, connect = TRUE) {
 The plot showing points estimates with confidence intervals from the data:
 
 ```{r dependson = "plot_data_prop_est"}
-#| label: fig-charts
+#| label: fig-data-table2
 #| fig-cap: "experimental proportions of positive ($n$ = 15) for the 4 treatments of
 #| Table 2 of [10.1164/rccm.201103-0397OC](https://doi.org/10.1164/rccm.201103-0397oc)."
 
