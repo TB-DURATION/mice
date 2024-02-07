@@ -180,19 +180,11 @@ seq2 <- function(...) seq(..., le = 100)
 seq3 <- function(...) seq(..., le = 512)
 ```
 
-Tuning `list()`:
-
-```{r}
-list2 <- function(...) {
-  setNames(c(as.list(environment()), list(...)),
-           map_chr(as.list(match.call())[-1], as.character))
-}
-```
-
 Tuning `title()`:
 
 ```{r}
 title2 <- function(...) title(..., line = .5)
+title3 <- function(...) title(..., line = 0)
 ```
 
 
@@ -452,6 +444,7 @@ mLL_INH <- calc_mLL("INH", seq2(.001, .05), seq2(.0001, .012))
 mLL_RIF <- calc_mLL("RIF", seq2(.001, .2), seq2(.0001, .1))
 mLL_RIFINH <- calc_mLL("RIF+INH", seq2(.05, .15), seq2(.0001, .15))
 mLL_RPTINH <- calc_mLL("RPT+INH", seq2(.001, .5), seq2(.0001, .1))
+mLL_TMC <- calc_mLL("TMC", seq2(.08, .2), seq2(.0001, .15))
 ```
 
 A function that draws the minus log-likelihood surfaces:
@@ -463,7 +456,7 @@ show_mLL <- function(x, ...) {
           xlab = expression(paste("within-host mean decay rate ", mu, " (/day)")),
           ylab = expression(paste("individual variability ", sigma, " (/day)")))
     contour(mu_val, sigma_val, mLL_val, add = TRUE,
-            levels = c(.002, .01, .1, 1:5), ...)
+            levels = c(.002, .01, .1, 1:10), ...)
     box(bty = "o")
   })
 }
@@ -471,20 +464,19 @@ show_mLL <- function(x, ...) {
 
 Let's try it:
 
-```{r dependson = "show_mLL", fig.height = 1.3 * 5, fig.width  = 1.5 * 5}
+```{r dependson = "show_mLL", fig.height = 1.75 * 5, fig.width  = 1.5 * 5}
 #| label: fig-likelihood-surface
 #| fig-cap: "likelihood surface of the model with the data from the 4 treatments of
 #| Table 2 of [10.1164/rccm.201103-0397OC](https://doi.org/10.1164/rccm.201103-0397oc)."
 
-opar <- par(mfrow = c(2, 2), cex = 1, plt = c(.17, .93, .2, .87))
+opar <- par(mfrow = c(3, 2), cex = 1, plt = c(.17, .93, .18, .89))
 
-walk2(list(mLL_INH, mLL_RIF, mLL_RIFINH, mLL_RPTINH),
-      c("INH", "RIF", "RIF+INH", "RPT+INH"),
+walk2(list(mLL_INH, mLL_RIF, mLL_RIFINH, mLL_RPTINH, mLL_TMC),
+      c("INH", "RIF", "RIF+INH", "RPT+INH", "TMC"),
       ~ {show_mLL(.x); title2(.y)})
 
 par(opar)
 ```
-
 
 ### MLE by BFGS
 
@@ -502,26 +494,29 @@ estimations <- function(mu, sigma, lower, upper, drug, N0 = 1e4, epsilon = 1e-16
 Let's use it:
 
 ```{r warning = FALSE}
-est_RIF    <- estimations(mu    = .08, sigma = .02,
-                          lower = c(mu = .06, sigma = .01),
-                          upper = c(mu = .09, sigma = .05),
-                          drug  = "RIF")
-
-est_RIFINH <- estimations(mu    = .11, sigma = .04,
-                          lower = c(mu = .09, sigma = .02),
-                          upper = c(mu = .11, sigma = .05),
-                          drug  = "RIF+INH")
-
-est_RPTINH <- estimations(mu    = .3, sigma = .04,
-                          lower = c(mu = .28, sigma = .01),
-                          upper = c(mu = .32, sigma = .08),
-                          drug  = "RPT+INH")
+est <- list(
+  RIF     = estimations(          mu = .08, sigma = .02,
+                        lower = c(mu = .06, sigma = .01),
+                        upper = c(mu = .09, sigma = .05),
+                        drug  = "RIF"),
+  RIF_INH = estimations(          mu = .11, sigma = .04,
+                        lower = c(mu = .09, sigma = .02),
+                        upper = c(mu = .11, sigma = .05),
+                        drug  = "RIF+INH"),
+  RPT_INH = estimations(          mu = .3 , sigma = .04,
+                        lower = c(mu = .28, sigma = .01),
+                        upper = c(mu = .32, sigma = .08),
+                        drug  = "RPT+INH"),
+  TMC     = estimations(          mu = .12, sigma = .04,
+                        lower = c(mu = .11, sigma = .03),
+                        upper = c(mu = .13, sigma = .06),
+                        drug  = "TMC"))
 ```
 
 Which gives:
 
 ```{r}
-map_dfr(list2(est_RIF, est_RIFINH, est_RPTINH), coef, .id = "group")
+map_dfr(est, coef, .id = "group")
 ```
 
 ### Model predictions
@@ -549,11 +544,11 @@ plot(NA, xlim = c(0, x_max), ylim = c(0, 25),
      xlab = expression(paste("decay rate ", lambda, " (/day)")),
      ylab = "density of probability")
 
-c(est_RIF, est_RIFINH, est_RPTINH) |> 
+est |> 
   map(coef) |> 
-  walk2(col_treatments[2:4], add_area)
+  walk2(col_treatments[-1], add_area)
 
-legend2("topright", legend = treatments[-1], col = col_treatments[2:4], lwd = 2)
+legend2("topright", legend = treatments[-1], col = col_treatments[-1], lwd = 2)
 ```
 
 A function that adds model predictions to a plot:
@@ -570,29 +565,38 @@ add_pred <- function(x, col, t_max, cfu0 = 1e4, alpha = .2, aggregation = 7) {
 ```
 
 The following function shows the model-predicted expected proportions of
-positive individuals in the population:
+positive individuals in the population for a given treatment:
 
-```{r predicted_cfu, dependson = "add_pred"}
-predicted_cfu <- function(t_max = 6 * 30, agg = 7, log = FALSE, cfu0 = 1e4, ...) {
+```{r dependson = "add_pred"}
+predicted_cfu2 <- function(est, col, t_max = 6 * 30, agg = 7, log = FALSE,
+                           cfu0 = 1e4, ...) {
   plot_frame(t_max = t_max, agg = agg, log = log, ...)
-  list(est_RIF, est_RIFINH, est_RPTINH) |> 
-    map(coef) |> 
-    walk2(col_treatments[2:4], add_pred, t_max, cfu0, aggregation = agg)
+  add_pred(coef(est), col, t_max, cfu0, aggregation = agg)
 }
 ```
 
-Let's try it:
+This function is a wrapper around `predicted_cfu2()` that calls  `predicted_cfu2()` in
+3 different ways:
 
-```{r dependson = "predicted_cfu", fig.width = 1.7 * 5, fig.height = 3.1}
+```{r}
+plot1drug_pred <- function(est, col, ttl, ...) {
+  predicted_cfu2(est, col, xlab = "time (weeks)", ...)
+  predicted_cfu2(est, col, 30, 1, xlab = "time (days)", ...)
+  title3(ttl)
+  predicted_cfu2(est, col, xlab = "time (weeks)", log = TRUE, ...)
+}
+```
+
+Let's show the model prediction for all the estimated treatment effects:
+
+```{r fig.width = .7 * 1.7 * 5, fig.height = .7 * 4 * 3.1}
 #| label: fig-predicted-cfu-decay
 #| fig-cap: "model-predicted decay of CFU from the experimental data of Table 2 of
 #| [10.1164/rccm.201103-0397OC](https://doi.org/10.1164/rccm.201103-0397oc)."
 
-opar <- par(mfrow = c(1, 3), cex = 1, plt = c(.2, .95, .1983, .8947))
-predicted_cfu(xlab = "time (weeks)")
-add_legend()
-predicted_cfu(30, 1, xlab = "time (days)")
-predicted_cfu(xlab = "time (weeks)", log = TRUE)
+opar <- par(mfrow = c(4, 3), cex = 1, plt = c(.24, .99, .2383, .9147))
+pwalk(list(est, col_treatments[-1], treatments[-1]),
+      plot1drug_pred, mgp = c(1.25, 0, 0))
 par(opar)
 ```
 
@@ -612,37 +616,41 @@ add_mod_pred <- function(x, col, alpha = .2) {
 }
 ```
 
-Proportion of individuals with CFU > 1 as a function of time in a population of
-15 individuals:
+Another version of the `plot_data_prop_est()` function that plot only 1 treatment:
 
-```{r dependson = "plot_data_prop_est"}
+```{r plot_data_prop_est2, dependson = "plot_prop_est"}
+plot_data_prop_est2 <- function(ttmt, col, polyg = TRUE, connect = TRUE) {
+  plot(NA, xlim = c(0, 6), ylim = 0:1,
+     xlab = "duration of treatment (months)",
+     ylab = "proportion of positive mice")
+
+  table2a |> 
+    filter(group == ttmt) |> 
+    plot_prop_est(col, polyg, connect)
+}
+```
+
+Model-predicted proportion of positive individuals as a function of time in a population
+of 15 individuals and in comparison with experimental data:
+
+```{r dependson = "plot_data_prop_est", fig.height = 1.3 * 5, fig.width  = 1.5 * 5}
 #| label: fig-data-model-prediction
 #| fig-cap: "visual assessment of the fit of the model to the data of Table 2 of
 #| [10.1164/rccm.201103-0397OC](https://doi.org/10.1164/rccm.201103-0397oc)."
 
-plot_data_prop_est(FALSE, FALSE)
-add_mod_pred(coef(est_RIF), col_treatments[2])
-add_mod_pred(coef(est_RIFINH), col_treatments[3])
-add_mod_pred(coef(est_RPTINH), col_treatments[4])
-legend("topright", legend = treatments, col = col_treatments, lwd = line_width)
+opar <- par(mfrow = c(2, 2), cex = 1, plt = c(.17, .93, .2, .87))
+for (i in 2:5) {
+  plot_data_prop_est2(treatments[i], col_treatments[i], FALSE, FALSE)
+  add_mod_pred(coef(est[[i - 1]]), col_treatments[i])
+  title2(treatments[i])
+}
+par(opar)
 ```
 
 
 ## Speculations in humans
 
-Let's see what happens if we change the initial CFU:
-
-```{r fig.width = 1.7 * 5, fig.height = 3.1}
-#| label: fig-effect-of-initial-cfu
-#| fig-cap: "decay dynamics of CFU as a function of initial CFU value."
-
-opar <- par(mfrow = c(1, 3), cex = 1, plt = c(.2, .95, .1983, .8947))
-walk(10^(4:2), ~ predicted_cfu(xlab = "time (weeks)", log = TRUE, cfu0 = .x))
-add_legend()
-par(opar)
-```
-
-Another version of the `predicted_cfu2()` function:
+Another version of the `predicted_cfu()` function:
 
 ```{r predicted_cfu2, dependson = "add_pred"}
 predicted_cfu2 <- function(t_max = 6 * 30, agg = 7, log = FALSE,
@@ -653,25 +661,20 @@ predicted_cfu2 <- function(t_max = 6 * 30, agg = 7, log = FALSE,
 }
 ```
 
-Another way to look at the effect of initial CFU on the decay:
+Let's see what happens if we change the initial CFU:
 
-```{r dependson = "predicted_cfu2", fig.width = 1.7 * 5, fig.height = 3.1}
+```{r dependson = "plot_data_prop_est", fig.height = 1.3 * 5, fig.width  = 1.5 * 5}
 #| label: fig-effect-of-initial-cfu2
 #| fig-cap: "another way to look at the decay dynamics of CFU as a function of initial
 #| CFU value."
 
-predicted_cfu2_tmp <- function(...) {
-  predicted_cfu2(..., log = TRUE, xlab = "time (weeks)")
+opar <- par(mfrow = c(2, 2), cex = 1, plt = c(.17, .93, .2, .87))
+
+for (i in 2:5) {
+  predicted_cfu2(est_drug = est[[i - 1]], col = col_treatments[i],
+                 log = TRUE, xlab = "time (weeks)")
+  title2(treatments[i])
 }
-
-opar <- par(mfrow = c(1, 3), cex = 1, plt = c(.2, .95, .1983, .8947))
-
-predicted_cfu2_tmp(est_drug = est_RIF,    col = col_treatments[2])
-title2("RIF")
-predicted_cfu2_tmp(est_drug = est_RIFINH, col = col_treatments[3])
-title2("RIF+INH")
-predicted_cfu2_tmp(est_drug = est_RPTINH, col = col_treatments[4])
-title2("RPT+INH")
 
 par(opar)
 ```
@@ -687,7 +690,7 @@ cfu1_time <- function(x, cfu0 = 1e4, p = .5) {
 }
 ```
 
-The following function calculate the time of sterilization together with
+The following function calculates the time of sterilization together with
 confidence interval:
 
 ```{r}
@@ -696,44 +699,43 @@ CFU0_effect_cfu1_time <- function(x, cfu0) {
 }
 ```
 
+
 ```{r}
-add_speculation1 <- function(x, col, alpha = .2) {
+add_speculation <- function(est, col, alpha = .2,
+                            v_val = unlist(map(10^(0:3), ~ .x * 1:10)),
+                            h_val = 10 * 0:20) {
+  abline2(v = v_val); abline2(h = h_val)
+  axis(1); axis(2)
   cfu0_val <- 10^seq3(0, 4)
-  out <- map_dfr(cfu0_val, CFU0_effect_cfu1_time, x = coef(x))
+  out <- map_dfr(cfu0_val, CFU0_effect_cfu1_time, x = coef(est))
   polygon2(cfu0_val, out$upper, out$lower, col = col)
   lines2(cfu0_val, out$median, col = col)
 }
 ```
 
-```{r}
-add_speculation2 <- function(v_val = unlist(map(10^(0:3), ~ .x * 1:10)),
-                             h_val = 10 * 0:20) {
-  abline2(v = v_val); abline2(h = h_val)
-  axis(1); axis(2)
-  walk2(list(est_RIF, est_RIFINH, est_RPTINH), col_treatments[2:4], add_speculation1)
-}
-```
 
-```{r fig.width = 1.7 * 5, fig.height = 3.1}
+```{r fig.width = .7 * 1.7 * 5, fig.height = .7 * 4 * 3.1}
 #| label: fig-sterilization-and-initial-cfu
 #| fig-cap: "time at which sterilization is reached as a function of the initial CFU
 #| value."
 
-opar <- par(mfrow = c(1, 3), cex = 1, plt = c(.2, .95, .1983, .8947))
+opar <- par(mfrow = c(4, 3), cex = 1, plt = c(.24, .99, .2383, .9147))
 
 plot_tmp <- function(...) {
   plot(..., axes = FALSE, xlab = "initial CFU", ylab = "time of clearance (days)")
 }
 
-plot_tmp(NA, xlim = 10^c(0, 4), ylim = c(0, 200), log = "x")
-add_speculation2()
-add_legend("topleft")
-
-plot_tmp(NA, xlim = c(1, 50), ylim = c(0, 100))
-add_speculation2(v_val = seq(0, 50, 5))
-
-plot_tmp(NA, xlim = c(1, 10), ylim = c(0, 50))
-add_speculation2(h_val = seq(0, 50, 5))
+for (i in 2:5) {
+  plot_tmp(NA, xlim = 10^c(0, 4), ylim = c(0, 200), log = "x")
+  add_speculation(est[[i - 1]], col_treatments[i])
+  
+  plot_tmp(NA, xlim = c(1, 50), ylim = c(0, 100))
+  add_speculation(est[[i - 1]], col_treatments[i], v_val = seq(0, 50, 5))
+  title3(treatments[i])
+  
+  plot_tmp(NA, xlim = c(1, 10), ylim = c(0, 50))
+  add_speculation(est[[i - 1]], col_treatments[i], h_val = seq(0, 50, 5))
+}
 
 par(opar)
 ```
