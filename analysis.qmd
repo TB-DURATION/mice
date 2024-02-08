@@ -39,6 +39,8 @@ Specifically the data from Table 2 shown in @fig-table-2 below.
 
 ![Table 2 from [10.1164/rccm.201103-0397OC](https://doi.org/10.1164/rccm.201103-0397oc).](table 2.png){#fig-table-2}
 
+![Figure 3 from [10.1164/rccm.201103-0397OC](https://doi.org/10.1164/rccm.201103-0397oc).](figure 3.png){#fig-figure-3 width=45%}
+
 The data show the proportion of positive mice as a function of time (about 15
 mice per time point and treatment) but what we are interested in is the CFU
 clearance dynamics at the individual level. Since the former is a consequence of
@@ -190,6 +192,8 @@ title3 <- function(...) title(..., line = 0)
 
 ## The data
 
+### Table 2
+
 Reading the data:
 
 ```{r}
@@ -273,6 +277,43 @@ The plot showing points estimates with confidence intervals from the data:
 plot_data_prop_est()
 legend2("bottomright", legend = treatments, col = col_treatments, lwd = line_width)
 ```
+
+### Figure 3
+
+Reading the data:
+
+```{r}
+figure3 <- "scanned Y values" |>
+  read.csv(header = FALSE) |> 
+  setNames("logCFU") |> 
+  as_tibble() |> 
+  mutate(group = rep(c("C", treatments), each = 4),
+         cfu   = 10^logCFU) |> 
+  select(-logCFU)
+```
+
+It looks like this:
+
+```{r}
+x_lab <- c("C", treatments)
+x_val <- seq_along(x_lab)
+col_val <- rep(c(1, col_treatments), each = 4)
+
+figure3b <- mutate(figure3, x = jitter(rep(x_val, each = 4)))
+
+with(figure3b,
+     plot(x, cfu, col = col_val, log = "y", ylim = c(1, 12000), xlab = NA, axes = FALSE,
+          lwd = line_width, ylab = "number of CFU after 1 month of treatment"))
+abline2(h = unlist(map(10^(0:3), ~ .x * 1:10)))
+
+with(figure3b, points(x, cfu, col = col_val))
+figure3b |> 
+  filter(group != "C") |>
+  with(points(x, cfu, pch = 19, col = adjustcolor(col_val[-(1:4)], .2)))
+
+axis(1, x_val, x_lab); axis(2)
+```
+
 
 ## A model of CFU decay
 
@@ -599,12 +640,6 @@ pwalk(list(est, col_treatments[-1], treatments[-1]),
       plot1drug_pred, mgp = c(1.25, 0, 0))
 par(opar)
 ```
-
-We can compare this model predictions at individual level with Figure 3 of
-[10.1164/rccm.201103-0397OC](https://doi.org/10.1164/rccm.201103-0397oc)
-that shows CFU after 1 month of treatment, see @fig-figure-3 below.
-
-![Figure 3 from [10.1164/rccm.201103-0397OC](https://doi.org/10.1164/rccm.201103-0397oc).](figure 3.png){#fig-figure-3 width=45%}
 
 A function that adds model-predicted proportions of individual with CFU > 1 in 
 a population of 15 individuals:
